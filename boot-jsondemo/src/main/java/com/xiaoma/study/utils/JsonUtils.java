@@ -16,6 +16,18 @@ import java.util.*;
  * Description: No Description
  */
 
+/**
+ * 这里使用的alibaba的fastjson,
+ * 使用时需要将字符串放进map里
+ * 然后才能
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 public class JsonUtils {
 
     public static void main(String[] args) {
@@ -42,8 +54,10 @@ public class JsonUtils {
                 "    \"TotalPage\": 2677\n" +
                 "  }\n" +
                 "}";
+        //将json串转成map集合
         Map<String, Object> jsonToMap = parseJsonToMap(json);
-        List<HashMap<String, Object>> test = test(jsonToMap);
+
+        List<HashMap<String, Object>> test = parseToJsonObject(jsonToMap);
         test.forEach(key ->{
             for (String s : key.keySet()) {
                 System.out.println(s+ "===="+key.get(s));
@@ -60,6 +74,22 @@ public class JsonUtils {
         System.out.println(test.toString());
     }
 
+    /**
+     * 由于jsonObject底层入参是map，所以在使用jsonObject转换时先要将入参转换成map集合
+     * public JSONObject(Map<String, Object> map) {
+     *         if (map == null) {
+     *             throw new IllegalArgumentException("map is null.");
+     *         } else {
+     *             this.map = map;
+     *         }
+     *     }
+     *
+     *
+     *     parseJsonToMap将json串转换成map集合
+     *
+     * @param json
+     * @return
+     */
     private static Map<String, Object> parseJsonToMap(String json) {
         JSONObject jsonObject = JSONObject.parseObject(json);
         Map<String,Object> jsonMap = new HashMap<String,Object>();
@@ -67,8 +97,35 @@ public class JsonUtils {
         return jsonMap;
     }
 
-
-    static List<HashMap<String, Object>> test(Map<String, Object> jsonToMap){
+    /**
+     *{
+     *     "paramz": {
+     *         "feeds": [
+     *             {
+     *                 "id": ,
+     *                 "oid": ,
+     *                 "category": "",
+     *                 "data": {
+     *                     "subject": "",
+     *                     "summary": "",
+     *                     "cover": "",
+     *                     "pic": "",
+     *                     "format": "",
+     *                     "changed": ""
+     *                 }
+     *             }
+     *         ],
+     *     }
+     * }
+     *
+     *
+     * {}一般就是对象  getJSONObject(String val)获取格式为{}的json 根 对象
+     * [] 一般就是数组   getJSONArray() 通过根对象获取json数组
+     * getJSONObject(Integer v)   获取数组里的每一个属性
+     * @param jsonToMap
+     * @return
+     */
+    static List<HashMap<String, Object>> parseToJsonObject(Map<String, Object> jsonToMap){
         List<HashMap<String,Object>> dataList;
         dataList = new ArrayList<>();
         try {
