@@ -4,6 +4,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/boot-jsondemo/pom.xml" />
+        <option value="$PROJECT_DIR$/boot-okhttp-demo/pom.xml" />
       </list>
     </option>
   </component>
