@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/boot-jsondemo/boot-jsondemo.iml" filepath="$PROJECT_DIR$/boot-jsondemo/boot-jsondemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/boot-okhttp-demo/boot-okhttp-demo.iml" filepath="$PROJECT_DIR$/boot-okhttp-demo/boot-okhttp-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/boot-quartz-demo/boot-quartz-demo.iml" filepath="$PROJECT_DIR$/boot-quartz-demo/boot-quartz-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/spring-boot-cloud-demo.iml" filepath="$PROJECT_DIR$/.idea/spring-boot-cloud-demo.iml" />
     </modules>
   </component>
