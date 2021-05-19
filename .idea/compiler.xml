@@ -9,12 +9,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="boot-okhttp-demo" />
         <module name="boot-jsondemo" />
-        <module name="boot-email-demo" />
         <module name="boot-quartz-demo" />
+        <module name="boot-email-demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="boot-email-demo" target="8" />
+      <module name="boot-email-demo" target="1.8" />
       <module name="boot-jsondemo" target="8" />
       <module name="boot-okhttp-demo" target="8" />
       <module name="boot-quartz-demo" target="8" />
@@ -22,6 +22,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="boot-email-demo" options="-parameters" />
       <module name="boot-jsondemo" options="-parameters" />
       <module name="boot-okhttp-demo" options="-parameters" />
       <module name="boot-quartz-demo" options="-parameters" />
