@@ -23,7 +23,7 @@ public class MyScheduler {
 
         //4、执行
         scheduler.scheduleJob(jobDetail, trigger);
-        System.out.println("--------scheduler start ! ------------");
+        System.out.println("--------scheduler start ! -----------");
         scheduler.start();
 
         //睡眠
