@@ -1,3 +1,4 @@
+/*
 package com.xiaoma.email.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
@@ -21,14 +22,16 @@ public class MailServiceImpl implements MailService {
     @Value("${spring.mail.username}")
     private String from;
 
-    /**
+    */
+/**
      * 发送文本邮件
      *
      * @param to      收件人地址
      * @param subject 邮件主题
      * @param content 邮件内容
      * @param cc      抄送地址
-     */
+     *//*
+
     @Override
     public void sendSimpleMail(String to, String subject, String content, String... cc) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -42,7 +45,8 @@ public class MailServiceImpl implements MailService {
         mailSender.send(message);
     }
 
-    /**
+    */
+/**
      * 发送HTML邮件
      *
      * @param to      收件人地址
@@ -50,7 +54,8 @@ public class MailServiceImpl implements MailService {
      * @param content 邮件内容
      * @param cc      抄送地址
      * @throws MessagingException 邮件发送异常
-     */
+     *//*
+
     @Override
     public void sendHtmlMail(String to, String subject, String content, String... cc) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -65,7 +70,8 @@ public class MailServiceImpl implements MailService {
         mailSender.send(message);
     }
 
-    /**
+    */
+/**
      * 发送带附件的邮件
      *
      * @param to       收件人地址
@@ -74,7 +80,8 @@ public class MailServiceImpl implements MailService {
      * @param filePath 附件地址
      * @param cc       抄送地址
      * @throws MessagingException 邮件发送异常
-     */
+     *//*
+
     @Override
     public void sendAttachmentsMail(String to, String subject, String content, String filePath, String... cc) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -94,7 +101,8 @@ public class MailServiceImpl implements MailService {
         mailSender.send(message);
     }
 
-    /**
+    */
+/**
      * 发送正文中有静态资源的邮件
      *
      * @param to      收件人地址
@@ -104,7 +112,8 @@ public class MailServiceImpl implements MailService {
      * @param rscId   静态资源id
      * @param cc      抄送地址
      * @throws MessagingException 邮件发送异常
-     */
+     *//*
+
     @Override
     public void sendResourceMail(String to, String subject, String content, String rscPath, String rscId, String... cc) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -123,3 +132,4 @@ public class MailServiceImpl implements MailService {
         mailSender.send(message);
     }
 }
+*/

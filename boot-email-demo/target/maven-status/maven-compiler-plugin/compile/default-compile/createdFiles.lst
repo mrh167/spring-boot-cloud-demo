@@ -1,0 +1,4 @@
+com\xiaoma\email\common\utils\StringUtils.class
+com\xiaoma\email\common\enums\RegisterRegionEnum.class
+com\xiaoma\email\SpringBootDemoEmailApplication.class
+com\xiaoma\email\entity\UrgeLogInfoCo.class
