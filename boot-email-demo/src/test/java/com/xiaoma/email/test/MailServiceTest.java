@@ -4,13 +4,20 @@ import cn.hutool.core.io.resource.ResourceUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.xiaoma.email.SpringBootDemoEmailApplicationTests;
+import com.xiaoma.email.common.enums.OpenStatusEnum;
 import com.xiaoma.email.common.enums.RegisterRegionEnum;
+import com.xiaoma.email.entity.SellerSettledLogInfoEntity;
 import com.xiaoma.email.entity.UrgeLogInfoCo;
 //import com.xiaoma.email.service.MailService;
 import com.xiaoma.email.common.utils.StringUtils;
+import com.xiaoma.email.entity.UserSellersErpEntity;
+import com.xiaoma.email.service.SellerSettledLogInfoService;
+import com.xiaoma.email.service.SellerSettledUserInfoService;
+import com.xiaoma.email.service.UserSellersErpService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -30,12 +37,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import static sun.security.x509.X509CertInfo.SUBJECT;
 @Configuration
 //@EnableScheduling
 @Slf4j
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yml")
 public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 //    @Autowired
 //    MailService mailService;
@@ -122,7 +130,16 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
         mailService.sendResourceMail("mrh100353@163.com", "这是一封带静态资源的邮件", content, resource.getPath(), rscId);
     }*/
     @Autowired
-    MailProperties mailProperties;
+    private MailProperties mailProperties;
+    @Autowired
+    private UserSellersErpService userSellersErpService;
+    @Autowired
+    private SellerSettledLogInfoService settledLogInfoService;
+    @Autowired
+    private SellerSettledUserInfoService settledUserInfoService;
+
+
+
     @Test
     public void sendMail() {
         /**
@@ -134,16 +151,26 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
         log.info("MailScheduleTask.sendMail start");
 
-        List<UrgeLogInfoCo> list = new ArrayList<>();
-        list.add( new UrgeLogInfoCo(1L,"322332323","张三",1,new Date(),"华北"));
-        list.add( new UrgeLogInfoCo(2L,"5746465466","里斯",1,new Date(),"华东"));
+//        List<UrgeLogInfoCo> list = new ArrayList<>();
+//        list.add( new UrgeLogInfoCo(1L,"322332323","张三",1,new Date(),"华北"));
+//        list.add( new UrgeLogInfoCo(2L,"5746465466","里斯",1,new Date(),"华东"));
+
+
+        List<UserSellersErpEntity> listSellerNo = userSellersErpService.listAll();
+        List<String> sellerNo = listSellerNo.stream().map(UserSellersErpEntity::getSellerNo).collect(Collectors.toList());
+        List<SellerSettledLogInfoEntity> settledLogInfoEntityList = settledLogInfoService.listAccountApp(sellerNo);
 
 
 
-//        List<UrgeLogInfoCo> entitys = sellerSettledLogInfoRepository.listUrgeLogInfo();
-        if (CollectionUtils.isEmpty(list)) {//如果查不到数据 则不用发送邮件
+        if (CollectionUtils.isEmpty(settledLogInfoEntityList)) {//如果查不到账号申请的数据 则不用发送邮件
             return;
         }
+        settledLogInfoEntityList.stream().forEach(seller->{
+            if (!OpenStatusEnum.PENDING_STATUS.getCode().equals(seller.getOpenStatus())) {
+                return;
+            }
+        });
+
         String[] toAddresses = mailProperties.getTo().split(",");
         log.info("收件人：{}", JSON.toJSONString(toAddresses));
 
@@ -154,6 +181,9 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
         properties.put("mail.sender.username", mailProperties.getUsername());
         properties.put("mail.sender.password", mailProperties.getPassword());
         properties.put("mail.transport.protocol", mailProperties.getProtocol());
+        properties.put("mail.smtp.ssl.enable", mailProperties.isSsl());
+        properties.put("mail.smtp.starttls.enable", mailProperties.isStarttls());
+        properties.put("mail.smtp.starttls.required", mailProperties.isRequired());
 
         log.info("properties配置信息为:{}", JSON.toJSONString(properties));
         Session session = Session.getInstance(properties);
@@ -162,7 +192,7 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
         Message msg = new MimeMessage(session);
         try {
             msg.setSubject(SUBJECT);
-            String msgContent = htmlMail(list);
+            String msgContent = htmlMail(settledLogInfoEntityList);
             log.info("发送邮件内容：{}", msgContent);
             msg.setContent(msgContent, mailProperties.getContentPart());// 设置邮件内容，为html格式
             // 设置发件人
@@ -186,13 +216,13 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
 
 
-    private String htmlMail(List<UrgeLogInfoCo> entitys) {
+    private String htmlMail( List<SellerSettledLogInfoEntity> entitys) {
         StringBuilder mailText = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mailText.append("<table style='text-align: center;border-collapse:collapse;' border='1' cellpadding='0' cellspacing='0'>");
         mailText.append("<tr bgcolor='#C00000'><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>序号</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>商家名称</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>商家编码(ECP)</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>签约区域</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>催办次数</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>最新催办时间</span></b></td><tr>");
         for (int i = 0; i < entitys.size(); i++) {
-            UrgeLogInfoCo entity = entitys.get(i);
+            SellerSettledLogInfoEntity entity = entitys.get(i);
             String sellerName = entity.getSellerName();
             String sellerNo = entity.getSellerNo();
             //签约区域

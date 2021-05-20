@@ -32,5 +32,11 @@ public class MailProperties implements Serializable {
     private String to;
     @Value("${mail.transport.protocol}")
     private String protocol;
+    @Value("${mail.smtp.ssl.enable}")
+    private boolean ssl;
+    @Value("${mail.smtp.starttls.enable}")
+    private boolean starttls;
+    @Value("${mail.smtp.starttls.required}")
+    private boolean required;
 
 }
