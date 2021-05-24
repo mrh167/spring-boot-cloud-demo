@@ -17,7 +17,19 @@ public class UserSellersErpServiceImpl extends ServiceImpl<UserSellersErpMapper,
     UserSellersErpMapper userSellersErpMapper;
 
     @Override
-    public List<UserSellersErpEntity> listAll() {
-        return userSellersErpMapper.selectList(null);
+    public List<UserSellersErpEntity> listAll(Map<String, Object> pageParams) {
+        return userSellersErpMapper.listAll(pageParams);
     }
+
+    @Override
+    public Integer totalCount() {
+        return userSellersErpMapper.totalCount();
+    }
+
+    @Override
+    public List<UserSellersErpEntity> getSellerNo(String accountId) {
+        return userSellersErpMapper.getSellerNo(accountId);
+    }
+
+
 }

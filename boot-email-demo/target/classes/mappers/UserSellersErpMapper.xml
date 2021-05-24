@@ -23,16 +23,13 @@
     <sql id="Base_Column_List">
                    id,
                    account,
-                   account_id AS accountId,
-                   seller_no AS sellerNo,
-                   seller_name AS sellerName,
+                   account_id,
+                   seller_no,
+                   seller_name,
                    username,
                    email,
-                   create_user AS createUser,
-                   update_user AS updateUser,
-                   create_time AS createTime,
-                   update_time AS updateTime,
-                   yn,
+                   create_user,
+                   update_user,create_time,update_time,yn
             </sql>
 <!-- 基础查询条件 -->
     <sql id="Base_Where_Clause">
@@ -58,4 +55,24 @@
     <select id="excelExport" resultType="com.xiaoma.email.entity.UserSellersErpEntity">
 
     </select>
+
+   <select id="totalCount" resultType="java.lang.Integer">
+       select count(*) from portal_user_sellers_erp where yn = 1
+   </select>
+
+   <select id="listAll" resultMap="BaseResultMap">
+       select
+            <include refid="Base_Column_List"/>
+       from
+            portal_user_sellers_erp
+            where yn = 1
+       limit #{pageSize}
+   </select>
+
+   <select id="getSellerNo" resultMap="BaseResultMap">
+       select
+            <include refid="Base_Column_List"/>
+       from portal_user_sellers_erp
+       where account_id = #{accountId} and yn = 1
+   </select>
 </mapper>

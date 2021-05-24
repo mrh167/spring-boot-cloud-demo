@@ -9,6 +9,9 @@ import java.util.Map;
 public interface UserSellersErpService extends IService<UserSellersErpEntity> {
 
 
-    List<UserSellersErpEntity> listAll();
+    List<UserSellersErpEntity> listAll(Map<String, Object> pageParams);
 
+    Integer totalCount();
+
+    List<UserSellersErpEntity> getSellerNo(String accountId);
 }
