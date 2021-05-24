@@ -8,6 +8,7 @@ com\xiaoma\email\common\utils\StringUtils.class
 com\xiaoma\email\entity\SellerSettledLogInfoEntity.class
 com\xiaoma\email\service\impl\SellerSettledUserInfoServiceImpl.class
 com\xiaoma\email\service\SellerSettledLogInfoService.class
+com\xiaoma\email\common\enums\ManageDimensionEnum.class
 com\xiaoma\email\mapper\SellerSettledUserInfoMapper.class
 com\xiaoma\email\mapper\BaseUserInfoMapper.class
 com\xiaoma\email\SpringBootDemoEmailApplication.class

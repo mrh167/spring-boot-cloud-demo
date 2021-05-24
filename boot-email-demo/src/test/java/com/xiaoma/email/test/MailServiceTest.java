@@ -159,49 +159,51 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
 
 
-        String msgContent = "";
+
         Map<String, Object> pageParams = new HashMap<>();
-            pageParams.put("id", 0);
-            pageParams.put("pageSize", pageSize);
-            pageParams.put("manageDimension", ManageDimensionEnum.SALES.getCode());
-            Integer totalSize = baseUserInfoMapper.totalCountDimension(ManageDimensionEnum.SALES.getCode());
-            log.info("user - total size: 【{}】", totalSize);
+        pageParams.put("id", 0);
+        pageParams.put("pageSize", pageSize);
+        pageParams.put("manageDimension", ManageDimensionEnum.SALES.getCode());
+        Integer totalSize = baseUserInfoMapper.totalCountDimension(ManageDimensionEnum.SALES.getCode());
+        log.info("user - total size: 【{}】", totalSize);
 
-            if (totalSize > 0) {
-                int pages = (int) (totalSize / pageSize + ((totalSize % pageSize == 0) ? 0 : 1));
-                for (int i = 0; i < pages; i++) {
-                    List<BaseUserInfoEntity> userList = baseUserInfoMapper.taskPageManageDimension(pageParams);
-                    log.info("user - userList size: 【{}】, pages = {}", userList.size(), i + 1);
+        if (totalSize > 0) {
+            int pages = (int) (totalSize / pageSize + ((totalSize % pageSize == 0) ? 0 : 1));
+            for (int i = 0; i < pages; i++) {
+                List<BaseUserInfoEntity> userList = baseUserInfoMapper.taskPageManageDimension(pageParams);
+                log.info("user - userList size: 【{}】, pages = {}", userList.size(), i + 1);
 
-                    if (CollUtil.isNotEmpty(userList)) {
-                        List<String> accountIds = userList.stream().map(BaseUserInfoEntity::getAccountId).distinct().collect(Collectors.toList());
-                        List<UserSellersErpEntity> erpList = userSellersErpMapper.selectSellerNoListByAccounts(accountIds);
-                        log.info("user - erpList size: 【{}】", erpList.size());
+                if (CollUtil.isNotEmpty(userList)) {
+                    List<String> accountIds = userList.stream().map(BaseUserInfoEntity::getAccountId).distinct().collect(Collectors.toList());
+                    List<UserSellersErpEntity> erpList = userSellersErpMapper.selectSellerNoListByAccounts(accountIds);
+                    log.info("user - erpList size: 【{}】", erpList.size());
 
 //                        Map<String, UserSellersErpDo> erpMap = erpList.stream().collect(Collectors.);
-                        Map<String, List<UserSellersErpEntity>> erpMap = erpList.stream().distinct().collect(Collectors.groupingBy(UserSellersErpEntity::getAccountId));
-                        erpMap.forEach((accountId, erpDoList) -> {
-                            try {
-                                List<SellerSettledLogInfoEntity> settledLogInfo = settledLogInfoService.listPendingSellers(erpDoList);
-                                htmlMail(settledLogInfo);
-                                //如果查不到账号申请的数据 则不用发送邮件
-                                if (CollectionUtils.isEmpty(settledLogInfo)) {
-                                    return;
-                                }
+                    Map<String, List<UserSellersErpEntity>> erpMap = erpList.stream().distinct().collect(Collectors.groupingBy(UserSellersErpEntity::getAccountId));
+                    erpMap.forEach((accountId, erpDoList) -> {
+                        try {
+                            List<SellerSettledLogInfoEntity> settledLogInfo = settledLogInfoService.listPendingSellers(erpDoList);
+                            buildMailConpent(settledLogInfo);
+                            //如果查不到账号申请的数据 则不用发送邮件
+                            if (CollectionUtils.isEmpty(settledLogInfo)) {
+                                return;
+                            }
 //                                List<SellerSettledLogInfoEntity> accountsInfo = settledUserInfoService.listPendingAccounts(erpDoList, null);
 
-                                //睡眠50毫秒
-                            } catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        });
+                            //睡眠50毫秒
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    });
 
-                        BaseUserInfoEntity lastUser = userList.get(userList.size() - 1);
-                        pageParams.put("id", lastUser.getId());
-                    }
+                    BaseUserInfoEntity lastUser = userList.get(userList.size() - 1);
+                    pageParams.put("id", lastUser.getId());
                 }
             }
+        }
+    }
 
+    private void buildMailConpent(List<SellerSettledLogInfoEntity> settledLogInfo){
         String[] toAddresses = mailProperties.getTo().split(",");
         log.info("收件人：{}", JSON.toJSONString(toAddresses));
 
@@ -223,7 +225,7 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
         Message msg = new MimeMessage(session);
         try {
             msg.setSubject(SUBJECT);
-//            String msgContent = htmlMail(listSellerNo);
+            String msgContent = htmlMail(settledLogInfo);
             log.info("发送邮件内容：{}", msgContent);
             msg.setContent(msgContent, mailProperties.getContentPart());// 设置邮件内容，为html格式
             // 设置发件人
@@ -244,6 +246,7 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
             e.printStackTrace();
         }
     }
+
 
     private String htmlMail( List<SellerSettledLogInfoEntity> entitys) {
         StringBuilder mailText = new StringBuilder();
