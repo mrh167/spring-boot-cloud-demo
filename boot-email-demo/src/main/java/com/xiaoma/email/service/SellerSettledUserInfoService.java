@@ -9,4 +9,5 @@ import java.util.List;
 public interface SellerSettledUserInfoService extends IService<SellerSettledUserInfoEntity> {
 
 
+    List<SellerSettledUserInfoEntity> listPendingAccounts(List<UserSellersErpEntity> sellerList);
 }

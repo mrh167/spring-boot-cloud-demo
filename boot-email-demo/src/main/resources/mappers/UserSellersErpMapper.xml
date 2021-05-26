@@ -78,11 +78,11 @@
 
    <select id="selectSellerNoListByAccounts" resultMap="BaseResultMap">
        select
-       id, account_id
+       id, account_id,seller_no
        from portal_user_sellers_erp
        where yn = 1
        and account_id in
-       <foreach collection="accountIdList" open="(" close=")" item="accountId" separator=",">
+       <foreach collection="accountIds" open="(" close=")" item="accountId" separator=",">
            #{accountId}
        </foreach>
    </select>

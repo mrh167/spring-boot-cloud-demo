@@ -119,15 +119,15 @@
 
    <select id="listPendingSellers" resultMap="BaseResultMap">
        select
-       seller_no,seller_name ,seller_type,register_region,apply_account,apply_time
+       seller_no,seller_name ,region_account,register_region,apply_account,apply_time
        from
        portal_seller_settled_log_info
        where
        open_status = 2
        <if test="sellerList != null and sellerList.size() > 0">
            AND seller_no in
-           <foreach collection="sellerNo" open="(" item="seller" separator="," close=")">
-               #{seller}
+           <foreach collection="sellerList" open="(" item="seller" separator="," close=")">
+               #{seller.sellerNo}
            </foreach>
        </if>
 

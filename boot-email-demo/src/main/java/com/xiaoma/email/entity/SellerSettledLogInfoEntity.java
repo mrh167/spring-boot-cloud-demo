@@ -1,5 +1,6 @@
 package com.xiaoma.email.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -27,10 +28,12 @@ public class SellerSettledLogInfoEntity implements Serializable {
 	/**
 	 * 商家编码
 	 */
+	@ExcelProperty(value = "商家编码")
 	private String sellerNo;
 	/**
 	 * 商家名称
 	 */
+	@ExcelProperty(value = "商家名称")
 	private String sellerName;
 	/**
 	 * 商家类型ECLP,OTHER
@@ -43,6 +46,7 @@ public class SellerSettledLogInfoEntity implements Serializable {
 	/**
 	 * 区域销售,逗号分隔
 	 */
+	@ExcelProperty(value = "区域销售")
 	private String regionAccount;
 	/**
 	 * 青龙业主号
@@ -51,6 +55,7 @@ public class SellerSettledLogInfoEntity implements Serializable {
 	/**
 	 * 签约区域,逗号分隔，详见签约区域枚举
 	 */
+	@ExcelProperty(value = "签约区域")
 	private String registerRegion;
 	/**
 	 * eclp商家类型FCS/FBP/SOP,逗号分隔
@@ -71,6 +76,7 @@ public class SellerSettledLogInfoEntity implements Serializable {
 	/**
 	 * 申请账号,逗号分隔
 	 */
+	@ExcelProperty(value = "申请人pin")
 	private String applyAccount;
 	/**
 	 * 京慧开通时间
@@ -107,6 +113,7 @@ public class SellerSettledLogInfoEntity implements Serializable {
 	/**
 	 * 申请时间
 	 */
+	@ExcelProperty(value = "申请时间")
 	private Date applyTime;
 	/**
 	 * 审批人

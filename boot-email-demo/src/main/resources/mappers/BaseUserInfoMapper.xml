@@ -86,13 +86,17 @@
 
    <select id="taskPageManageDimension" resultMap="BaseResultMap">
        SELECT
-       id, account_id
+       <include refid="Base_Column_List"/>
        FROM portal_base_user_info
        WHERE yn = 1
        AND account_type = 1
-       AND manage_dimension = #{countDimension}
+       AND manage_dimension = #{manageDimension}
        AND id > #{id}
        ORDER BY id
        LIMIT #{pageSize}
+   </select>
+
+   <select id="getEmail" resultType="java.lang.String">
+       select email from portal_base_user_info where account_id = #{accountId}
    </select>
 </mapper>

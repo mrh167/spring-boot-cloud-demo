@@ -12,5 +12,5 @@ public interface SellerSettledLogInfoService extends IService<SellerSettledLogIn
     List<SellerSettledLogInfoEntity> listAccountApp(List<String> sellerNo);
 
 
-    List<SellerSettledLogInfoEntity> listPendingSellers(List<UserSellersErpEntity> value);
+    List<SellerSettledLogInfoEntity> listPendingSellers(List<UserSellersErpEntity> sellerList);
 }

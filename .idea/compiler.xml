@@ -12,6 +12,7 @@
         <module name="boot-jsondemo" />
         <module name="boot-quartz-demo" />
         <module name="boot-email-demo" />
+        <module name="easyexcel" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +20,7 @@
       <module name="boot-jsondemo" target="8" />
       <module name="boot-okhttp-demo" target="8" />
       <module name="boot-quartz-demo" target="8" />
+      <module name="easyexcel" target="1.6" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

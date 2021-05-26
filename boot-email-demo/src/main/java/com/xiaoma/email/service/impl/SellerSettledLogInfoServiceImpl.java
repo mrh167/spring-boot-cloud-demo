@@ -23,8 +23,8 @@ public class SellerSettledLogInfoServiceImpl extends ServiceImpl<SellerSettledLo
     }
 
     @Override
-    public List<SellerSettledLogInfoEntity> listPendingSellers(List<UserSellersErpEntity> value) {
-        return settledLogInfoMapper.listPendingSellers(value);
+    public List<SellerSettledLogInfoEntity> listPendingSellers(List<UserSellersErpEntity> sellerList) {
+        return settledLogInfoMapper.listPendingSellers(sellerList);
     }
 //
 //    @Override

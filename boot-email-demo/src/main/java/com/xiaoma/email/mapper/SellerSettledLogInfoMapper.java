@@ -16,5 +16,5 @@ public interface SellerSettledLogInfoMapper extends BaseMapper<SellerSettledLogI
 
     List<SellerSettledLogInfoEntity> getSellerNo(String sellerNo);
 
-    List<SellerSettledLogInfoEntity> listPendingSellers(List<UserSellersErpEntity> sellerList);
+    List<SellerSettledLogInfoEntity> listPendingSellers(@Param("sellerList") List<UserSellersErpEntity> sellerList);
 }

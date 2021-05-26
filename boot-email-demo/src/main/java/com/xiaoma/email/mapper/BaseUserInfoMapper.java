@@ -12,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface BaseUserInfoMapper extends BaseMapper<BaseUserInfoMapper> {
 
-    List<BaseUserInfoEntity> listAll(Map<String, Object> pageParams);
+//    List<BaseUserInfoEntity> listAll(Map<String, Object> pageParams);
 
 
     List<BaseUserInfoEntity> getAccountId(String sellerNo);
@@ -20,4 +20,6 @@ public interface BaseUserInfoMapper extends BaseMapper<BaseUserInfoMapper> {
     Integer totalCountDimension(@Param("countDimension") int countDimension);
 
     List<BaseUserInfoEntity> taskPageManageDimension(Map<String, Object> pageParams);
+
+    String getEmail(@Param("accountId") String accountId);
 }

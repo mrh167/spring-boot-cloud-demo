@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/boot-okhttp-demo/pom.xml" />
         <option value="$PROJECT_DIR$/boot-quartz-demo/pom.xml" />
         <option value="$PROJECT_DIR$/boot-email-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/easyexcel/pom.xml" />
       </list>
     </option>
   </component>

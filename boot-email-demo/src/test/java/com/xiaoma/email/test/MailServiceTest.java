@@ -1,22 +1,31 @@
 package com.xiaoma.email.test;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.extra.template.engine.velocity.VelocityEngine;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.xiaoma.email.SpringBootDemoEmailApplicationTests;
 import com.xiaoma.email.common.enums.ManageDimensionEnum;
 import com.xiaoma.email.common.enums.RegisterRegionEnum;
+import com.xiaoma.email.common.utils.CommonCellWriterHandler;
+import com.xiaoma.email.common.utils.EasyExcelUtil;
+import com.xiaoma.email.common.utils.EmailUtil;
 import com.xiaoma.email.entity.BaseUserInfoEntity;
 import com.xiaoma.email.entity.SellerSettledLogInfoEntity;
 //import com.xiaoma.email.service.MailService;
 import com.xiaoma.email.common.utils.StringUtils;
+import com.xiaoma.email.entity.SellerSettledUserInfoEntity;
 import com.xiaoma.email.entity.UserSellersErpEntity;
+import com.xiaoma.email.entity.excelvo.SellerExcelVo;
+import com.xiaoma.email.entity.vo.GenerateExcelSendEmailVo;
 import com.xiaoma.email.mapper.BaseUserInfoMapper;
 import com.xiaoma.email.mapper.UserSellersErpMapper;
+import com.xiaoma.email.service.EmailService;
 import com.xiaoma.email.service.SellerSettledLogInfoService;
 import com.xiaoma.email.service.SellerSettledUserInfoService;
 import com.xiaoma.email.service.UserSellersErpService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.formula.functions.T;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,9 +35,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.TemplateEngine;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
+import javax.mail.util.ByteArrayDataSource;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +54,48 @@ import static sun.security.x509.X509CertInfo.SUBJECT;
 @Slf4j
 @PropertySource("classpath:application.yml")
 public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
+
+    EmailUtil emailUtil = new EmailUtil();
+
+//    @Test
+//    public void testSendMail(){
+//        GenerateExcelSendEmailVo vo = new GenerateExcelSendEmailVo<>();
+//
+//// 1.构建导出数据内容
+//        List<Student> dataList = new ArrayList<>();
+//        Student student = new Student();
+//        student.setUserName("小许");
+//        student.setAddress("上海市 浦东新区");
+//        dataList.add(student);
+//        vo.setDataList(dataList);
+//
+//// 2.设置表头
+//        SellerExcelVo excelVo = new SellerExcelVo();
+//        List<SellerExcelVo> headList = new ArrayList<>();
+//        excelVo.setUsername("姓名");
+//        excelVo.setAddress("地址");
+//        headList.add(excelVo);
+//        vo.setTableHeadList(headList);
+//
+//// 3.设置email的title
+//        vo.setEmailTitle("测试");
+//
+////4.设置email的内容
+//        vo.setEmailContent("哈喽");
+//
+//// 5.设置收件人
+//        List<String> acceptAddressList = new ArrayList<>();
+//        acceptAddressList.add("ext.maruihua1@jd.com");
+//        vo.setAcceptAddressList(acceptAddressList);
+//
+//// 6.发送邮件
+//        try {
+//            emailUtil.sendEmail(vo);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
 //    @Autowired
 //    MailService mailService;
     @Autowired
@@ -53,7 +108,259 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
 
 
 
-   /* *//**
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private MailProperties mailProperties;
+    @Autowired
+    private UserSellersErpService userSellersErpService;
+    @Autowired
+    private UserSellersErpMapper userSellersErpMapper;
+    @Autowired
+    private SellerSettledLogInfoService settledLogInfoService;
+    @Autowired
+    private SellerSettledUserInfoService settledUserInfoService;
+    @Autowired
+    private BaseUserInfoMapper baseUserInfoMapper;
+    @Value("${sync.user.erp.task.pageSize:20}")
+    private Integer pageSize;
+
+
+
+
+
+
+    @Test
+    public void sendMail() {
+        /**
+         * 催办邮件配置类
+         */
+        log.info("MailScheduleTask.sendMail start");
+
+//        List<UrgeLogInfoCo> list = new ArrayList<>();
+//        list.add( new UrgeLogInfoCo(1L,"322332323","张三",1,new Date(),"华北"));
+//        list.add( new UrgeLogInfoCo(2L,"5746465466","里斯",1,new Date(),"华东"));
+
+        //pageCount = (totalCount -1) / pageSize + 1
+        //pageCount = (totalCount % pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1)
+        //pageCount = (totalCount + pageSize -1) / pageSize
+
+
+
+
+        Map<String, Object> pageParams = new HashMap<>();
+        pageParams.put("id", 0);
+        pageParams.put("pageSize", pageSize);
+        pageParams.put("manageDimension", ManageDimensionEnum.SALES.getCode());
+        //统计userinfo中的销售维度erp的数量
+        Integer totalSize = baseUserInfoMapper.totalCountDimension(ManageDimensionEnum.SALES.getCode());
+        log.info("销售erp中的-总数user - total size: 【{}】", totalSize);
+
+        if (totalSize > 0) {
+            int pages = (int) (totalSize / pageSize + ((totalSize % pageSize == 0) ? 0 : 1));
+            for (int i = 0; i < pages; i++) {
+                //分页查询销售维度的商家信息
+                List<BaseUserInfoEntity> userList = baseUserInfoMapper.taskPageManageDimension(pageParams);
+                log.info("user - userList size: 【{}】, pages = {}", userList.size(), i + 1);
+                //判断是否有销售维度的商家，如果有就去seller_settled_user_info和seller_settled_log_info查找该销售下的所有待审核商家
+                if (CollUtil.isNotEmpty(userList)) {
+                    List<String> accountIds = userList.stream().map(BaseUserInfoEntity::getAccountId).distinct().collect(Collectors.toList());
+                    List<UserSellersErpEntity> erpList = userSellersErpMapper.selectSellerNoListByAccounts(accountIds);
+                    log.info("user - erpList size: 【{}】", erpList.size());
+
+//                        Map<String, UserSellersErpDo> erpMap = erpList.stream().collect(Collectors.);
+                    Map<String, List<UserSellersErpEntity>> erpMap = erpList.stream().distinct().collect(Collectors.groupingBy(UserSellersErpEntity::getAccountId));
+
+                    erpMap.forEach((accountId, sellerList) -> {
+//                        try {
+                            List<SellerSettledLogInfoEntity> settledLogInfo = settledLogInfoService.listPendingSellers(sellerList);
+                            List<SellerSettledUserInfoEntity> accountsInfo = settledUserInfoService.listPendingAccounts(sellerList);
+                            String emails = baseUserInfoMapper.getEmail(accountId);
+                            generateExcelSendEmail(settledLogInfo,accountsInfo,emails);
+
+
+//                            buildMailConpent(emails,settledLogInfo);
+                            //如果查不到账号申请的数据 则不用发送邮件
+//                            if (CollectionUtils.isEmpty(settledLogInfo)) {
+//                                return;
+//                            }
+//
+
+                            //睡眠50毫秒
+//                        } catch (Exception e){
+//                            e.printStackTrace();
+//                        }
+                    });
+
+                    BaseUserInfoEntity lastUser = userList.get(userList.size() - 1);
+                    pageParams.put("id", lastUser.getId());
+                }
+            }
+        }
+    }
+
+    private void generateExcelSendEmail(List<SellerSettledLogInfoEntity> dataList,List<SellerSettledUserInfoEntity> accountsInfo, String emails) {
+        try {
+        String fileName = "email_" + new Random().nextInt(10000) + System.currentTimeMillis() + ".xlsx";
+        OutputStream out = new FileOutputStream(fileName);
+
+        //生成excel
+        EasyExcelUtil.writeExcelWithModel(out, dataList,accountsInfo, SellerSettledLogInfoEntity.class,"待审核商家",new CommonCellWriterHandler(null));
+        // 发送邮件
+//        emailService.sendMsgFileDs(fileName, new FileInputStream(fileName));
+//            String attr_path = this.getClass().getResource(fileName).getPath();
+//            log.info("文件名为：{}",attr_path);
+            buildMailConpent(emails,dataList,fileName, new File(fileName).getPath());
+        } catch (Exception e) {
+            log.error("发送邮件时报错：{}", e);
+        }
+    }
+
+
+
+
+    private void buildMailConpent(String emails, List<SellerSettledLogInfoEntity> settledLogInfo, String fileName, String inputStream){
+//        String[] toAddresses = mailProperties.getTo().split(",");
+       Session session = assembleSession();
+        String[] toAddresses = emails.split(",");
+        log.info("收件人：{}", JSON.toJSONString(toAddresses));
+
+        // 创建邮件对象
+        Message msg = new MimeMessage(session);
+        try {
+            msg.setSubject(SUBJECT);
+            String msgContent = htmlMail(settledLogInfo);
+
+//            MimeBodyPart content =(MimeBodyPart) createContent(inputStream, fileName);
+//            log.info("附件文件：{}",content);
+//            MimeMultipart mixed = new MimeMultipart("mixed");
+//            mixed.addBodyPart(content);
+//            msg.setContent(content);
+
+            //容器类，可以包含多个MimeBodyPart对象
+            Multipart mp = new MimeMultipart();
+            //MimeBodyPart可以包装文本，图片，附件
+            MimeBodyPart body = new MimeBodyPart();
+            //HTML正文
+            body.setContent(msgContent, "text/html; charset=UTF-8");
+            mp.addBodyPart(body);
+
+            //添加图片&附件
+            body = new MimeBodyPart();
+            body.attachFile(inputStream);
+            mp.addBodyPart(body);
+
+
+
+
+            log.info("发送邮件内容：{}", msgContent);
+//            msg.setContent(msgContent, mailProperties.getContentPart());// 设置邮件内容，为html格式
+            //设置附件内容
+            msg.setContent(mp);
+            // 设置发件人
+            msg.setFrom(new InternetAddress(mailProperties.getFrom()));// 设置邮件来源
+            Transport transport = session.getTransport();
+
+            // 连接邮件服务器
+            transport.connect(mailProperties.getHost(), mailProperties.getPort(), mailProperties.getUsername(), mailProperties.getPassword());
+            //收件人
+            ArrayList<Address> addresses = Lists.newArrayList();
+            for (String address : toAddresses) {
+                addresses.add(new InternetAddress(address));
+            }
+            //仅仅发送文本
+            //mimeMessage.setText(content);
+            msg.saveChanges();
+            /* 发送邮件 */
+            transport.sendMessage(msg, addresses.toArray(new Address[addresses.size()]));
+            // 关闭连接
+            transport.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    Part createContent(String inputStream, String affixName) {
+//        MimeBodyPart contentPart = null;
+//        try {
+//            contentPart = new MimeBodyPart();
+//            MimeMultipart contentMultipart = new MimeMultipart("related");
+////            MimeBodyPart htmlPart = new MimeBodyPart();
+////            htmlPart.setContent(content, "text/html;charset=gbk");
+////            contentMultipart.addBodyPart(htmlPart);
+//            //附件部分
+//            MimeBodyPart excelBodyPart = new MimeBodyPart();
+//            System.out.println(inputStream);
+//
+//            DataSource dataSource = new ByteArrayDataSource(inputStream, "application/excel");
+////            DataSource dataSource = new FileDataSource(new File(attr_path));
+//            DataHandler dataHandler = new DataHandler(dataSource);
+//            excelBodyPart.setDataHandler(dataHandler);
+//            excelBodyPart.setFileName(MimeUtility.encodeText(affixName));
+//            contentMultipart.addBodyPart(excelBodyPart);
+//            contentPart.setContent(contentMultipart);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return contentPart;
+//    }
+    private Session assembleSession(){
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", mailProperties.getHost());
+        properties.put("mail.smtp.auth", mailProperties.isAuth());
+        properties.put("mail.smtp.port", mailProperties.getPort());
+        properties.put("mail.sender.username", mailProperties.getUsername());
+        properties.put("mail.sender.password", mailProperties.getPassword());
+        properties.put("mail.transport.protocol", mailProperties.getProtocol());
+//        properties.put("mail.smtp.ssl.enable", mailProperties.isSsl());
+//        properties.put("mail.smtp.starttls.enable", mailProperties.isStarttls());
+//        properties.put("mail.smtp.starttls.required", mailProperties.isRequired());
+
+        log.info("properties配置信息为:{}", JSON.toJSONString(properties));
+        Session session = Session.getInstance(properties);
+        return session;
+    }
+
+    private String htmlMail( List<SellerSettledLogInfoEntity> entitys) {
+        StringBuilder mailText = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        mailText.append("<table style='text-align: center;border-collapse:collapse;' border='1' cellpadding='0' cellspacing='0'>");
+        mailText.append("<tr bgcolor='#C00000'><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>序号</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>商家名称</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>商家编码(ECP)</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>签约区域</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>申请人(pin)</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>申请时间</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>区域销售</span></b></td><tr>");
+
+        for (int i = 0; i < entitys.size(); i++) {
+            SellerSettledLogInfoEntity entity = entitys.get(i);
+            String sellerName = entity.getSellerName();
+            String sellerNo = entity.getSellerNo();
+            //签约区域
+            String registerRegion = "";
+            if (StringUtils.isNotBlank(entity.getRegisterRegion())) {
+                registerRegion = RegisterRegionEnum.parseRegisterRegion(entity.getRegisterRegion());//code转换成枚举desc
+            }
+            String applyAccount = entity.getApplyAccount();
+            String applyTime = "";
+            if (entity.getApplyTime() != null) {
+                applyTime = sdf.format(entity.getApplyTime());
+            }
+            String regionAccount = entity.getRegionAccount();
+
+            //催办次数
+//            String urgeCount = "";
+//            if (entity.getUrgeCount() != null) {
+//                urgeCount = String.valueOf(entity.getUrgeCount());
+//            }
+            //最后催办时间
+//            String lastUrgeTime = "";
+//            if (entity.getLastUrgeTime() != null) {
+//                lastUrgeTime = sdf.format(entity.getLastUrgeTime());
+//            }
+            mailText.append("<tr><td>" + (i + 1) + "</td><td>" + sellerName + "</td><td>" + sellerNo + "</td><td>" + registerRegion + "</td><td>" + applyAccount + "</td><td>" + applyTime + "</td><td>"+regionAccount +"</td><tr>");
+        }
+        mailText.append("</table>");
+        return mailText.toString();
+    }
+
+
+    /* *//**
      * 测试简单邮件
      *//*
     @Test
@@ -125,162 +432,6 @@ public class MailServiceTest extends SpringBootDemoEmailApplicationTests {
         URL resource = ResourceUtil.getResource("static/vfdv.jpg");
         mailService.sendResourceMail("mrh100353@163.com", "这是一封带静态资源的邮件", content, resource.getPath(), rscId);
     }*/
-    @Autowired
-    private MailProperties mailProperties;
-    @Autowired
-    private UserSellersErpService userSellersErpService;
-    @Autowired
-    private UserSellersErpMapper userSellersErpMapper;
-    @Autowired
-    private SellerSettledLogInfoService settledLogInfoService;
-    @Autowired
-    private SellerSettledUserInfoService settledUserInfoService;
-    @Autowired
-    private BaseUserInfoMapper baseUserInfoMapper;
-    @Value("${sync.user.erp.task.pageSize:20}")
-    private Integer pageSize;
-
-
-
-    @Test
-    public void sendMail() {
-        /**
-         * 催办邮件配置类
-         */
-        log.info("MailScheduleTask.sendMail start");
-
-//        List<UrgeLogInfoCo> list = new ArrayList<>();
-//        list.add( new UrgeLogInfoCo(1L,"322332323","张三",1,new Date(),"华北"));
-//        list.add( new UrgeLogInfoCo(2L,"5746465466","里斯",1,new Date(),"华东"));
-
-        //pageCount = (totalCount -1) / pageSize + 1
-        //pageCount = (totalCount % pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1)
-        //pageCount = (totalCount + pageSize -1) / pageSize
-
-
-
-
-        Map<String, Object> pageParams = new HashMap<>();
-        pageParams.put("id", 0);
-        pageParams.put("pageSize", pageSize);
-        pageParams.put("manageDimension", ManageDimensionEnum.SALES.getCode());
-        Integer totalSize = baseUserInfoMapper.totalCountDimension(ManageDimensionEnum.SALES.getCode());
-        log.info("user - total size: 【{}】", totalSize);
-
-        if (totalSize > 0) {
-            int pages = (int) (totalSize / pageSize + ((totalSize % pageSize == 0) ? 0 : 1));
-            for (int i = 0; i < pages; i++) {
-                List<BaseUserInfoEntity> userList = baseUserInfoMapper.taskPageManageDimension(pageParams);
-                log.info("user - userList size: 【{}】, pages = {}", userList.size(), i + 1);
-
-                if (CollUtil.isNotEmpty(userList)) {
-                    List<String> accountIds = userList.stream().map(BaseUserInfoEntity::getAccountId).distinct().collect(Collectors.toList());
-                    List<UserSellersErpEntity> erpList = userSellersErpMapper.selectSellerNoListByAccounts(accountIds);
-                    log.info("user - erpList size: 【{}】", erpList.size());
-
-//                        Map<String, UserSellersErpDo> erpMap = erpList.stream().collect(Collectors.);
-                    Map<String, List<UserSellersErpEntity>> erpMap = erpList.stream().distinct().collect(Collectors.groupingBy(UserSellersErpEntity::getAccountId));
-                    erpMap.forEach((accountId, erpDoList) -> {
-                        try {
-                            List<SellerSettledLogInfoEntity> settledLogInfo = settledLogInfoService.listPendingSellers(erpDoList);
-                            buildMailConpent(settledLogInfo);
-                            //如果查不到账号申请的数据 则不用发送邮件
-                            if (CollectionUtils.isEmpty(settledLogInfo)) {
-                                return;
-                            }
-//                                List<SellerSettledLogInfoEntity> accountsInfo = settledUserInfoService.listPendingAccounts(erpDoList, null);
-
-                            //睡眠50毫秒
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    });
-
-                    BaseUserInfoEntity lastUser = userList.get(userList.size() - 1);
-                    pageParams.put("id", lastUser.getId());
-                }
-            }
-        }
-    }
-
-    private void buildMailConpent(List<SellerSettledLogInfoEntity> settledLogInfo){
-        String[] toAddresses = mailProperties.getTo().split(",");
-        log.info("收件人：{}", JSON.toJSONString(toAddresses));
-
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", mailProperties.getHost());
-        properties.put("mail.smtp.auth", mailProperties.isAuth());
-        properties.put("mail.smtp.port", mailProperties.getPort());
-        properties.put("mail.sender.username", mailProperties.getUsername());
-        properties.put("mail.sender.password", mailProperties.getPassword());
-        properties.put("mail.transport.protocol", mailProperties.getProtocol());
-        properties.put("mail.smtp.ssl.enable", mailProperties.isSsl());
-        properties.put("mail.smtp.starttls.enable", mailProperties.isStarttls());
-        properties.put("mail.smtp.starttls.required", mailProperties.isRequired());
-
-        log.info("properties配置信息为:{}", JSON.toJSONString(properties));
-        Session session = Session.getInstance(properties);
-
-        // 创建邮件对象
-        Message msg = new MimeMessage(session);
-        try {
-            msg.setSubject(SUBJECT);
-            String msgContent = htmlMail(settledLogInfo);
-            log.info("发送邮件内容：{}", msgContent);
-            msg.setContent(msgContent, mailProperties.getContentPart());// 设置邮件内容，为html格式
-            // 设置发件人
-            msg.setFrom(new InternetAddress(mailProperties.getFrom()));// 设置邮件来源
-            Transport transport = session.getTransport();
-            // 连接邮件服务器
-            transport.connect(mailProperties.getHost(), mailProperties.getPort(), mailProperties.getUsername(), mailProperties.getPassword());
-            //收件人
-            ArrayList<Address> addresses = Lists.newArrayList();
-            for (String address : toAddresses) {
-                addresses.add(new InternetAddress(address));
-            }
-            /* 发送邮件 */
-            transport.sendMessage(msg, addresses.toArray(new Address[addresses.size()]));
-            // 关闭连接
-            transport.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private String htmlMail( List<SellerSettledLogInfoEntity> entitys) {
-        StringBuilder mailText = new StringBuilder();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        mailText.append("<table style='text-align: center;border-collapse:collapse;' border='1' cellpadding='0' cellspacing='0'>");
-        mailText.append("<tr bgcolor='#C00000'><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>序号</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>商家名称</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>商家编码(ECP)</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>签约区域</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>催办次数</span></b></td><td><b><span style='font-size:9.0pt;font-family:'微软雅黑',sans-serif;color:white'>最新催办时间</span></b></td><tr>");
-
-        for (int i = 0; i < entitys.size(); i++) {
-            SellerSettledLogInfoEntity entity = entitys.get(i);
-            String sellerName = entity.getSellerName();
-            String sellerNo = entity.getSellerNo();
-            //签约区域
-            String registerRegion = "";
-            if (StringUtils.isNotBlank(entity.getRegisterRegion())) {
-                registerRegion = RegisterRegionEnum.parseRegisterRegion(entity.getRegisterRegion());//code转换成枚举desc
-            }
-            //催办次数
-            String urgeCount = "";
-            if (entity.getUrgeCount() != null) {
-                urgeCount = String.valueOf(entity.getUrgeCount());
-            }
-            //最后催办时间
-            String lastUrgeTime = "";
-            if (entity.getLastUrgeTime() != null) {
-                lastUrgeTime = sdf.format(entity.getLastUrgeTime());
-            }
-            mailText.append("<tr><td>" + (i + 1) + "</td><td>" + sellerName + "</td><td>" + sellerNo + "</td><td>" + registerRegion + "</td><td>" + urgeCount + "</td><td>" + lastUrgeTime + "</td><tr>");
-        }
-        mailText.append("</table>");
-        return mailText.toString();
-    }
-
-
-
 
 
 //        Map<String, Object> pageParams = new HashMap<>();
