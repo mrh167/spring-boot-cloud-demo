@@ -12,6 +12,8 @@
     </properties>
 
     <Appenders>
+
+
         <!-- 输出控制台日志的配置 -->
         <Console name="console" target="SYSTEM_OUT">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
