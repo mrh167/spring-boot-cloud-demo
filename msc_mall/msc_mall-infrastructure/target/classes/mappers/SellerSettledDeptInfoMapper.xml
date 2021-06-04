@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.mall.repository.db.mapper.SellerSettledDeptInfoMapper">
+
+
+   <!-- 可根据自己的需求，是否要使用 -->
+   <resultMap type="com.msc.mall.domain.deptinfo.SellerSettledDeptInfoEntity" id="BaseResultMap">
+                      <result property="id" column="id"/>
+                      <result property="deptNo" column="dept_no"/>
+                      <result property="deptName" column="dept_name"/>
+                      <result property="sellerNo" column="seller_no"/>
+                      <result property="sellerName" column="seller_name"/>
+                      <result property="clientCode" column="client_code"/>
+                      <result property="contractCode" column="contract_code"/>
+                      <result property="businessClass" column="business_class"/>
+                      <result property="registerRegion" column="register_region"/>
+                      <result property="eclpSellerType" column="eclp_seller_type"/>
+                      <result property="groupAccount" column="group_account"/>
+                      <result property="regionAccount" column="region_account"/>
+                      <result property="createUser" column="create_user"/>
+                      <result property="updateUser" column="update_user"/>
+                      <result property="createTime" column="create_time"/>
+                      <result property="updateTime" column="update_time"/>
+                      <result property="yn" column="yn"/>
+          </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+                   id,
+                   dept_no AS deptNo,
+                   dept_name AS deptName,
+                   seller_no AS sellerNo,
+                   seller_name AS sellerName,
+                   client_code AS clientCode,
+                   contract_code AS contractCode,
+                   business_class AS businessClass,
+                   register_region AS registerRegion,
+                   eclp_seller_type AS eclpSellerType,
+                   group_account AS groupAccount,
+                   region_account AS regionAccount,
+                   create_user AS createUser,
+                   update_user AS updateUser,
+                   create_time AS createTime,
+                   update_time AS updateTime,
+                   yn
+            </sql>
+<!-- 基础查询条件 -->
+    <sql id="Base_Where_Clause">
+        WHERE yn = 1
+        <if test="sellerNo != null and sellerNo != ''">
+            AND seller_no = #{sellerNo}
+        </if>
+    </sql>
+
+    <!-- 分页查询条件 | 批量下载查询条件 -->
+    <sql id="Page_Where_Clause">
+        <if test="sellerNo != null and sellerNo != ''">
+            AND seller_no = #{sellerNo}
+        </if>
+    </sql>
+
+     <!-- 分页查询 -->
+    <select id="listPage" resultType="com.msc.mall.domain.deptinfo.SellerSettledDeptInfoEntity">
+        <include refid="Base_Column_List"/>
+    </select>
+
+    <!-- 批量导出 -->
+    <select id="excelExport" resultType="com.msc.mall.domain.deptinfo.SellerSettledDeptInfoEntity">
+
+    </select>
+</mapper>
