@@ -1,4 +1,4 @@
-package com.xiaoma.email.test;
+package com.xiaoma.email.config;
 
 import lombok.Data;
 
@@ -28,10 +28,11 @@ public class MailProperties implements Serializable {
     private String contentPart;
     @Value("${mail.from}")
     private String from;
-    @Value("${mail.to}")
-    private String to;
+//    @Value("${mail.to}")
+//    private String to;
     @Value("${mail.transport.protocol}")
     private String protocol;
+
 //    @Value("${mail.smtp.ssl.enable}")
 //    private boolean ssl;
 //    @Value("${mail.smtp.starttls.enable}")

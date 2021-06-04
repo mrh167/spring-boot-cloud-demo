@@ -3,6 +3,7 @@ package com.xiaoma.email.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xiaoma.email.entity.SellerSettledLogInfoEntity;
 import com.xiaoma.email.entity.UserSellersErpEntity;
+import com.xiaoma.email.entity.excelvo.SellerExcelVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,5 +17,5 @@ public interface SellerSettledLogInfoMapper extends BaseMapper<SellerSettledLogI
 
     List<SellerSettledLogInfoEntity> getSellerNo(String sellerNo);
 
-    List<SellerSettledLogInfoEntity> listPendingSellers(@Param("sellerList") List<UserSellersErpEntity> sellerList);
+    List<SellerExcelVo> listPendingSellers(@Param("sellerList") List<UserSellersErpEntity> sellerList);
 }

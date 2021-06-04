@@ -3,8 +3,10 @@ package com.xiaoma.email.common.utils;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.handler.CellWriteHandler;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
@@ -168,26 +170,36 @@ public class EasyExcelUtil {
      *
      * @param outputStream      输出流
      * @param dataList          导出的数据
-     * @param sheetName         sheetName
-     * @param cellWriteHandlers 样式处理类
      */
-    public static void writeExcelWithModel(OutputStream outputStream,List<? extends Object> dataList,List<? extends Object> accountsInfo,Class<? extends Object> classT, String sheetName, CellWriteHandler... cellWriteHandlers) {
-        // 头的策略
-        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
-        // 单元格策略
-        WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
-        // 初始化表格样式
-        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
+    public static void writeExcelWithModel(OutputStream outputStream,List<? extends Object> dataList,List<? extends Object> accountsInfo,Class<? extends Object> classT) {
 
-        ExcelWriterSheetBuilder excelWriterSheetBuilder = EasyExcel.write(outputStream,classT).sheet(sheetName).registerWriteHandler(horizontalCellStyleStrategy);
-        if (null != cellWriteHandlers && cellWriteHandlers.length > 0) {
-            for (int i = 0; i < cellWriteHandlers.length; i++) {
-                excelWriterSheetBuilder.registerWriteHandler(cellWriteHandlers[i]);
-            }
-        }
-        // 开始导出
-        excelWriterSheetBuilder.doWrite(dataList);
-        excelWriterSheetBuilder.doWrite(accountsInfo);
+        ExcelWriter excelWriter = EasyExcel.write(outputStream).build();
+        WriteSheet sellerSheet = EasyExcel.writerSheet(0,"商家开通待审核信息")
+                .head(classT)
+                .registerWriteHandler(getHorizontalCellStyleStrategy(IndexedColors.BLACK.index, IndexedColors.LIME.index))
+                .build();
+        excelWriter.write(dataList,sellerSheet);
+        WriteSheet accountSheet = EasyExcel.writerSheet(1,"账号申请待审核信息")
+                .head(classT)
+                .registerWriteHandler(getHorizontalCellStyleStrategy(IndexedColors.BLACK.index, IndexedColors.LIME.index))
+                .build();
+        excelWriter.write(accountsInfo,accountSheet);
+        excelWriter.finish();
+        //        // 头的策略
+//        WriteCellStyle headWriteCellStyle = new WriteCellStyle();
+//        // 单元格策略
+//        WriteCellStyle contentWriteCellStyle = new WriteCellStyle();
+//        // 初始化表格样式
+//        HorizontalCellStyleStrategy horizontalCellStyleStrategy = new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
+//
+//        ExcelWriterSheetBuilder excelWriterSheetBuilder = EasyExcel.write(outputStream,classT).sheet(sheetName).registerWriteHandler(horizontalCellStyleStrategy);
+//        if (null != cellWriteHandlers && cellWriteHandlers.length > 0) {
+//            for (int i = 0; i < cellWriteHandlers.length; i++) {
+//                excelWriterSheetBuilder.registerWriteHandler(cellWriteHandlers[i]);
+//            }
+//        }
+//        // 开始导出
+//        excelWriterSheetBuilder.doWrite(dataList);
     }
 }
 
