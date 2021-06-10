@@ -9,6 +9,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="msc_mall-client" />
+        <module name="start" />
+        <module name="msc_mall-infrastructure" />
         <module name="boot-jsondemo" />
         <module name="msc_mall-app" />
         <module name="msc_mall_common" />
@@ -16,9 +18,8 @@
         <module name="easyexcel" />
         <module name="msc_mall-controller" />
         <module name="boot-okhttp-demo" />
-        <module name="start" />
         <module name="msc_mall-domain" />
-        <module name="msc_mall-infrastructure" />
+        <module name="msc_mall_web" />
         <module name="boot-quartz-demo" />
       </profile>
     </annotationProcessing>
@@ -35,6 +36,7 @@
       <module name="msc_mall-domain" target="1.8" />
       <module name="msc_mall-infrastructure" target="1.8" />
       <module name="msc_mall_common" target="8" />
+      <module name="msc_mall_web" target="8" />
       <module name="start" target="1.8" />
     </bytecodeTargetLevel>
   </component>

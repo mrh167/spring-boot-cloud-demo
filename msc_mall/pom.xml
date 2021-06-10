@@ -52,6 +52,11 @@
             </dependency>
             <dependency>
                 <groupId>com.msc.mall</groupId>
+                <artifactId>msc_mall_web</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.msc.mall</groupId>
                 <artifactId>msc_mall-app</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
@@ -156,5 +161,6 @@
     <module>msc_mall-infrastructure</module>
     <module>start</module>
     <module>msc_mall_common</module>
+    <module>msc_mall_web</module>
 </modules>
 </project>

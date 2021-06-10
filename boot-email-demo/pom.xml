@@ -17,9 +17,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <cola.framework.version>2.0.0</cola.framework.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.alibaba.cola</groupId>
+            <artifactId>cola-common</artifactId>
+            <version>${cola.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cola</groupId>
+            <artifactId>cola-core</artifactId>
+            <version>${cola.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cola</groupId>
+            <artifactId>cola-test</artifactId>
+            <version>${cola.framework.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
@@ -119,6 +136,10 @@
             <groupId>com.jd.vsc.forecast</groupId>
             <artifactId>sales-forecast-client</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 </project>
