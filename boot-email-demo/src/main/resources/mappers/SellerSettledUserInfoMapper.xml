@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xiaoma.email.emaildemo.mapper.SellerSettledUserInfoMapper">
+<mapper namespace="com.xiaoma.email.mapper.SellerSettledUserInfoMapper">
 
 
    <!-- 可根据自己的需求，是否要使用 -->
-   <resultMap type="com.xiaoma.email.emaildemo.entity.SellerSettledUserInfoEntity" id="BaseResultMap">
+   <resultMap type="com.xiaoma.email.entity.SellerSettledUserInfoEntity" id="BaseResultMap">
                       <result property="id" column="id"/>
                       <result property="sellerNo" column="seller_no"/>
                       <result property="sellerName" column="seller_name"/>
@@ -52,16 +52,16 @@
     </sql>
 
      <!-- 分页查询 -->
-    <select id="listPage" resultType="com.xiaoma.email.emaildemo.entity.SellerSettledUserInfoEntity">
+    <select id="listPage" resultType="com.xiaoma.email.entity.SellerSettledUserInfoEntity">
         <include refid="Base_Column_List"/>
     </select>
 
     <!-- 批量导出 -->
-    <select id="excelExport" resultType="com.xiaoma.email.emaildemo.entity.SellerSettledUserInfoEntity">
+    <select id="excelExport" resultType="com.xiaoma.email.entity.SellerSettledUserInfoEntity">
 
     </select>
 
-   <select id="listPendingAccounts" resultType="com.xiaoma.email.emaildemo.entity.excelvo.SellerExcelVo">
+   <select id="listPendingAccounts" resultType="com.xiaoma.email.entity.excelvo.SellerExcelVo">
        select
             a.seller_no,a.seller_name,a.apply_account,a.apply_time,
             b.region_account,GROUP_CONCAT(distinct b.register_region) register_region

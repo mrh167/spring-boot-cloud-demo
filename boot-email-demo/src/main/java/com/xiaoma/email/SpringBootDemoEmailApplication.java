@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication
-@MapperScan("com.xiaoma.email.emaildemo.mapper")
+@MapperScan("com.xiaoma.email.mapper")
 public class SpringBootDemoEmailApplication {
 
     public static void main(String[] args) {
