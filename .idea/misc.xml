@@ -9,7 +9,14 @@
         <option value="$PROJECT_DIR$/boot-email-demo/pom.xml" />
         <option value="$PROJECT_DIR$/easyexcel/pom.xml" />
         <option value="$PROJECT_DIR$/msc_mall/pom.xml" />
+        <option value="$PROJECT_DIR$/msc_portal/pom.xml" />
+        <option value="$PROJECT_DIR$/msc_portal/msc_portal_domain_starter/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/msc_portal/msc/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
