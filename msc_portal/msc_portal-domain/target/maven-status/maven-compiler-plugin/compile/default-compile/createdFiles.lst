@@ -1,5 +1,0 @@
-com\msc\fix\lisa\domain\gateway\CustomerGateway.class
-com\msc\fix\lisa\domain\customer\Credit.class
-com\msc\fix\lisa\domain\gateway\CreditGateway.class
-com\msc\fix\lisa\domain\customer\domainservice\CreditChecker.class
-com\msc\fix\lisa\domain\customer\Customer.class

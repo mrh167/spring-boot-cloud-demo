@@ -8,6 +8,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="dao-starter" />
+        <module name="start" />
+        <module name="msc_portal_commons" />
         <module name="msc_portal-domain" />
         <module name="boot-jsondemo" />
         <module name="msc_portal-app" />
@@ -16,7 +19,6 @@
         <module name="msc_portal-controller" />
         <module name="msc_portal_domain_starter" />
         <module name="easyexcel" />
-        <module name="start" />
         <module name="boot-okhttp-demo" />
         <module name="msc_portal-client" />
         <module name="boot-quartz-demo" />
@@ -27,6 +29,7 @@
       <module name="boot-jsondemo" target="8" />
       <module name="boot-okhttp-demo" target="8" />
       <module name="boot-quartz-demo" target="8" />
+      <module name="dao-starter" target="1.8" />
       <module name="easyexcel" target="1.6" />
       <module name="msc_mall" target="1.8" />
       <module name="msc_mall-app" target="1.8" />
@@ -42,7 +45,8 @@
       <module name="msc_portal-controller" target="1.8" />
       <module name="msc_portal-domain" target="1.8" />
       <module name="msc_portal-infrastructure" target="1.8" />
-      <module name="msc_portal_domain_starter" target="8" />
+      <module name="msc_portal_commons" target="8" />
+      <module name="msc_portal_domain_starter" target="1.8" />
       <module name="start" target="1.8" />
     </bytecodeTargetLevel>
   </component>

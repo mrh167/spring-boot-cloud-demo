@@ -1,7 +1,0 @@
-com\msc\fix\lisa\executor\CustomerAddCmdExe.class
-com\msc\fix\lisa\interceptor\LoggerPreInterceptor.class
-com\msc\fix\lisa\executor\query\CustomerListByNameQryExe.class
-com\msc\fix\lisa\service\CustomerServiceImpl.class
-com\msc\fix\lisa\eventhandler\CustomerCreatedHandler.class
-com\msc\fix\lisa\interceptor\ValidationInterceptor.class
-com\msc\fix\lisa\interceptor\LoggerPostInterceptor.class

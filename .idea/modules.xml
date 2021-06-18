@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/boot-jsondemo/boot-jsondemo.iml" filepath="$PROJECT_DIR$/boot-jsondemo/boot-jsondemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/boot-okhttp-demo/boot-okhttp-demo.iml" filepath="$PROJECT_DIR$/boot-okhttp-demo/boot-okhttp-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/boot-quartz-demo/boot-quartz-demo.iml" filepath="$PROJECT_DIR$/boot-quartz-demo/boot-quartz-demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_portal/dao-starter/dao-starter.iml" filepath="$PROJECT_DIR$/msc_portal/dao-starter/dao-starter.iml" />
       <module fileurl="file://$PROJECT_DIR$/easyexcel/easyexcel.iml" filepath="$PROJECT_DIR$/easyexcel/easyexcel.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal-app/msc_portal-app.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal-app/msc_portal-app.iml" />
@@ -13,6 +14,7 @@
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal-controller/msc_portal-controller.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal-controller/msc_portal-controller.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal-domain/msc_portal-domain.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal-domain/msc_portal-domain.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal-infrastructure/msc_portal-infrastructure.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal-infrastructure/msc_portal-infrastructure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal_commons/msc_portal_commons.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal_commons/msc_portal_commons.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal_domain_starter/msc_portal_domain_starter.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal_domain_starter/msc_portal_domain_starter.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/spring-boot-cloud-demo.iml" filepath="$PROJECT_DIR$/.idea/spring-boot-cloud-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/start/start.iml" filepath="$PROJECT_DIR$/msc_portal/start/start.iml" />
