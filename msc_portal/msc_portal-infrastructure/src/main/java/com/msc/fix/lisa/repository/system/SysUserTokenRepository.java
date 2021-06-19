@@ -2,6 +2,7 @@ package com.msc.fix.lisa.repository.system;
 
 import com.alibaba.cola.dto.SingleResponse;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.TokenGenerator;
 import com.msc.fix.lisa.domain.entity.system.SysUserToken;
 import com.msc.fix.lisa.domain.gateway.system.SysUserTokenGateway;
@@ -27,7 +28,7 @@ public class SysUserTokenRepository extends ServiceImpl<SysUserTokenMapper, SysU
     private final static int EXPIRE = 3600 * 12;
 
     @Override
-    public SingleResponse createToken(Long userId) {
+    public R createToken(Long userId) {
         //生成一个token
         String token = TokenGenerator.generateValue();
 
@@ -56,10 +57,7 @@ public class SysUserTokenRepository extends ServiceImpl<SysUserTokenMapper, SysU
             this.updateById(tokenEntity);
         }
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("token", token);
-        map.put("expire", EXPIRE);
-        SingleResponse r = SingleResponse.of(map);
+        R r = R.ok().put("token", token).put("expire", EXPIRE);
 
         return r;
     }

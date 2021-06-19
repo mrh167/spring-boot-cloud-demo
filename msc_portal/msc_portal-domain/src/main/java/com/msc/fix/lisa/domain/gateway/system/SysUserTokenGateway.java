@@ -1,6 +1,6 @@
 package com.msc.fix.lisa.domain.gateway.system;
 
-import com.alibaba.cola.dto.SingleResponse;
+import com.msc.fix.lisa.common.R;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +10,7 @@ import com.alibaba.cola.dto.SingleResponse;
  * Description: No Description
  */
 public interface SysUserTokenGateway {
-    SingleResponse createToken(Long userId);
+    R createToken(Long userId);
 
     void logouts(Long userId);
 }

@@ -10,14 +10,15 @@ package com.msc.fix.lisa.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Configuration
-public class CorsConfigruation extends CorsConfiguration {
-
+/*@Configuration
+public class GuliCorsConfigruation {
+*//*
     @Bean
     public CorsWebFilter corsWebFilter(){
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -29,5 +30,17 @@ public class CorsConfigruation extends CorsConfiguration {
         corsConfigruation.setAllowCredentials(true);
         source.registerCorsConfiguration("/**",corsConfigruation);
         return new CorsWebFilter(source);
+    }*//*
+}*/
+@Configuration
+public class GuliCorsConfigruation implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOrigins("*")
+            .allowCredentials(true)
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .maxAge(3600);
     }
 }

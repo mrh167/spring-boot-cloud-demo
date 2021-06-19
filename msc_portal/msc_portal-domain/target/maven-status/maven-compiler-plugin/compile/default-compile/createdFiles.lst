@@ -1,0 +1,13 @@
+com\msc\fix\lisa\domain\entity\system\SysUserToken.class
+com\msc\fix\lisa\domain\gateway\CreditGateway.class
+com\msc\fix\lisa\domain\entity\system\SysUserEntity.class
+com\msc\fix\lisa\domain\gateway\CustomerGateway.class
+com\msc\fix\lisa\domain\gateway\system\SysUserTokenGateway.class
+com\msc\fix\lisa\domain\gateway\system\SysUserGateway.class
+com\msc\fix\lisa\domain\gateway\system\SysCaptchaGateway.class
+com\msc\fix\lisa\domain\common\utils\DateUtils.class
+com\msc\fix\lisa\domain\customer\Credit.class
+com\msc\fix\lisa\domain\entity\system\SysCaptcha.class
+com\msc\fix\lisa\domain\customer\domainservice\CreditChecker.class
+com\msc\fix\lisa\domain\common\utils\BeanUtils.class
+com\msc\fix\lisa\domain\customer\Customer.class

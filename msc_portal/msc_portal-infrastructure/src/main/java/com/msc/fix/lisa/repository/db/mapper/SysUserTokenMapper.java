@@ -10,6 +10,7 @@ package com.msc.fix.lisa.repository.db.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msc.fix.lisa.domain.entity.system.SysUserToken;
+import com.msc.fix.lisa.dto.system.cto.SysUserTokenCo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -20,6 +21,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysUserTokenMapper extends BaseMapper<SysUserToken> {
 
-//    SysUserTokenEntity queryByToken(String token);
-	
+    SysUserTokenCo queryByToken(String token);
+
 }

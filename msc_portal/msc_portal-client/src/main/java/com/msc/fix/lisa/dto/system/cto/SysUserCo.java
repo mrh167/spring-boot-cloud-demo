@@ -1,8 +1,10 @@
-package com.msc.fix.lisa.dto.system;
+package com.msc.fix.lisa.dto.system.cto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +16,8 @@ import java.util.List;
  * Description: No Description
  */
 @Data
-public class SysUserCo {
+public class SysUserCo implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 用户ID
      */
@@ -69,4 +72,11 @@ public class SysUserCo {
      */
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
+
+    /**
+     * 角色ID列表
+     */
+    @ApiModelProperty(hidden = true)
+    @TableField(exist=false)
+    private List<Long> roleIdList;
 }

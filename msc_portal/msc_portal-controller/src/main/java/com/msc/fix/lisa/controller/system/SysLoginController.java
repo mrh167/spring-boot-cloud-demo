@@ -1,18 +1,16 @@
-package com.msc.fix.lisa.controller;
+package com.msc.fix.lisa.controller.system;
 
 import com.alibaba.cola.dto.SingleResponse;
-import com.msc.fix.lisa.api.system.SysCaptchaService;
 import com.msc.fix.lisa.api.system.SysUserService;
 import com.msc.fix.lisa.base.AbstractController;
 import com.msc.fix.lisa.common.BusinessException;
+import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.domain.gateway.system.SysCaptchaGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysUserGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysUserTokenGateway;
 import com.msc.fix.lisa.dto.system.SysLoginForm;
-import com.msc.fix.lisa.dto.system.SysUserCo;
-import com.msc.fix.lisa.dto.system.UploadQry;
+import com.msc.fix.lisa.dto.system.cto.SysUserCo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,7 +33,7 @@ import java.util.Map;
 @RestController
 @Api(tags = "导入模板", produces = "application/json")
 @RequestMapping("/api")
-public class UploadController extends AbstractController {
+public class SysLoginController extends AbstractController {
 
 
     @Autowired
@@ -49,14 +46,6 @@ public class UploadController extends AbstractController {
     @Autowired
     private SysUserTokenGateway sysUserTokenGateway;
 
-    /**
-     * 测试案例
-     */
-    @ApiOperation(value = "测试案例")
-    @PostMapping(value = "/list")
-    public SingleResponse<List<SysUserCo>> list(@RequestBody UploadQry uploadQry){
-        return sysUserService.list(uploadQry);
-    }
 
     @GetMapping("/captcha.jpg")
     public void captcha(HttpServletResponse response,String uuid){
@@ -78,7 +67,7 @@ public class UploadController extends AbstractController {
      * 登录
      */
     @PostMapping("/sys/login")
-    public SingleResponse<Map<String, Object>> login(@RequestBody SysLoginForm form)throws IOException {
+    public Map<String, Object> login(@RequestBody SysLoginForm form)throws IOException {
         boolean captcha = sysCaptchaGateway.validate(form.getUuid(), form.getCaptcha());
 
         if(!captcha){
@@ -97,9 +86,9 @@ public class UploadController extends AbstractController {
             throw new BusinessException("账号已被锁定,请联系管理员");
         }
 
+        R r = sysUserTokenGateway.createToken(user.getUserId());
         //生成token，并保存到数据库
-        SingleResponse response = sysUserTokenGateway.createToken(user.getUserId());
-        return response;
+        return r;
     }
 
     /**

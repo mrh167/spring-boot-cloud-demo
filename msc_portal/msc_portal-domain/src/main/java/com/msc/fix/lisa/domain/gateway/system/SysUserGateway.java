@@ -1,8 +1,6 @@
 package com.msc.fix.lisa.domain.gateway.system;
 
-import com.alibaba.cola.dto.SingleResponse;
-import com.msc.fix.lisa.dto.system.SysUserCo;
-import com.msc.fix.lisa.dto.system.UploadQry;
+import com.msc.fix.lisa.dto.system.cto.SysUserCo;
 
 import java.util.List;
 
@@ -15,8 +13,9 @@ import java.util.List;
  */
 public interface SysUserGateway {
 
-    SingleResponse<List<SysUserCo>> list(UploadQry uploadQry);
 
     SysUserCo queryByUserName(String username);
 
+
+    List<Long> queryAllMenuId(Long userId);
 }
