@@ -3,6 +3,7 @@ package com.msc.fix.lisa.controller.system;
 import com.alibaba.cola.dto.SingleResponse;
 import com.msc.fix.lisa.base.AbstractController;
 import com.msc.fix.lisa.common.BaseHttpCodeResponse;
+import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.RRException;
 import com.msc.fix.lisa.domain.common.annotation.SysLog;
 import com.msc.fix.lisa.domain.common.utils.BeanUtils;
@@ -34,15 +35,11 @@ public class SysMenuController extends AbstractController {
      * 导航菜单
      */
     @GetMapping("/nav")
-    public SingleResponse<Map<String, Object>> nav(){
+    public R nav(){
         List<SysMenuCo> menuList = sysMenuGateway.getUserMenuList(getUserId());
         Set<String> permissions = shiroGateway.getUserPermissions(getUserId());
-        Map<String,Object> map = new HashMap<>();
-        map.put("menuList", menuList);
-        map.put("permissions", permissions);
-        return SingleResponse.of(map);
+        return R.ok().put("menuList", menuList).put("permissions", permissions);
     }
-
     /**
      * 所有菜单列表
      */

@@ -45,7 +45,7 @@ public class OAuth2Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        SysUser user = (SysUser)principals.getPrimaryPrincipal();
+        SysUserCo user = (SysUserCo) principals.getPrimaryPrincipal();
         Long userId = user.getUserId();
 
         //用户权限列表

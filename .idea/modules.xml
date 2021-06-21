@@ -8,6 +8,12 @@
       <module fileurl="file://$PROJECT_DIR$/boot-quartz-demo/boot-quartz-demo.iml" filepath="$PROJECT_DIR$/boot-quartz-demo/boot-quartz-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/dao-starter/dao-starter.iml" filepath="$PROJECT_DIR$/msc_portal/dao-starter/dao-starter.iml" />
       <module fileurl="file://$PROJECT_DIR$/easyexcel/easyexcel.iml" filepath="$PROJECT_DIR$/easyexcel/easyexcel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_mall/msc_mall-app/msc_mall-app.iml" filepath="$PROJECT_DIR$/msc_mall/msc_mall-app/msc_mall-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_mall/msc_mall-client/msc_mall-client.iml" filepath="$PROJECT_DIR$/msc_mall/msc_mall-client/msc_mall-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_mall/msc_mall-controller/msc_mall-controller.iml" filepath="$PROJECT_DIR$/msc_mall/msc_mall-controller/msc_mall-controller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_mall/msc_mall-domain/msc_mall-domain.iml" filepath="$PROJECT_DIR$/msc_mall/msc_mall-domain/msc_mall-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_mall/msc_mall-infrastructure/msc_mall-infrastructure.iml" filepath="$PROJECT_DIR$/msc_mall/msc_mall-infrastructure/msc_mall-infrastructure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/msc_mall/msc_mall_common/msc_mall_common.iml" filepath="$PROJECT_DIR$/msc_mall/msc_mall_common/msc_mall_common.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal-app/msc_portal-app.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal-app/msc_portal-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/msc_portal/msc_portal-client/msc_portal-client.iml" filepath="$PROJECT_DIR$/msc_portal/msc_portal-client/msc_portal-client.iml" />
