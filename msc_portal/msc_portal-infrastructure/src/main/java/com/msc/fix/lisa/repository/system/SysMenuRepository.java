@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msc.fix.lisa.domain.common.utils.Constant;
 import com.msc.fix.lisa.domain.common.utils.MapUtils;
 import com.msc.fix.lisa.domain.entity.system.SysMenu;
+import com.msc.fix.lisa.domain.gateway.system.SysMenuGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysRoleMenuGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysUserGateway;
-import com.msc.fix.lisa.domain.gateway.system.SysMenuGateway;
 import com.msc.fix.lisa.dto.system.cto.SysMenuCo;
 import com.msc.fix.lisa.repository.db.mapper.SysMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuGateway {
 
@@ -99,5 +100,24 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
         sysRoleMenuGateway.removeByMap(new MapUtils().put("menu_id", menuId));
     }
 
+    @Override
+    public SysMenu getById(Long parentId) {
+        return baseMapper.selectById(parentId);
+    }
+
+    @Override
+    public void updateByIds(SysMenu menu) {
+        baseMapper.updateById(menu);
+    }
+
+    @Override
+    public void saves(SysMenu menu) {
+        baseMapper.insert(menu);
+    }
+
+    @Override
+    public List<SysMenu> select() {
+        return baseMapper.selectList(null);
+    }
 
 }

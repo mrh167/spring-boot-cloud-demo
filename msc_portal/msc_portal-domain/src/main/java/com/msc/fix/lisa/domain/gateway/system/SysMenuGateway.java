@@ -1,12 +1,11 @@
 package com.msc.fix.lisa.domain.gateway.system;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.msc.fix.lisa.domain.entity.system.SysMenu;
 import com.msc.fix.lisa.dto.system.cto.SysMenuCo;
 
 import java.util.List;
 
-public interface SysMenuGateway extends IService<SysMenu> {
+public interface SysMenuGateway {
     /**
      * 根据父菜单，查询子菜单
      * @param parentId 父菜单ID
@@ -34,4 +33,12 @@ public interface SysMenuGateway extends IService<SysMenu> {
      * 删除
      */
     void delete(Long menuId);
+
+    SysMenu getById(Long parentId);
+
+    void updateByIds(SysMenu menu);
+
+    void saves(SysMenu menu);
+
+    List<SysMenu> select();
 }

@@ -1,5 +1,6 @@
 package com.msc.fix.lisa.dto.system.cto;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ public class SysMenuCo implements Serializable{
          * 菜单ID
          */
         @ApiModelProperty(value = "菜单主键")
+        @TableId
         private Long menuId;
 
         /**

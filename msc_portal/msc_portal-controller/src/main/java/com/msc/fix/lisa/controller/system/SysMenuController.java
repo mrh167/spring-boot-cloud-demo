@@ -1,8 +1,6 @@
 package com.msc.fix.lisa.controller.system;
 
-import com.alibaba.cola.dto.SingleResponse;
 import com.msc.fix.lisa.base.AbstractController;
-import com.msc.fix.lisa.common.BaseHttpCodeResponse;
 import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.RRException;
 import com.msc.fix.lisa.domain.common.annotation.SysLog;
@@ -17,9 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -46,7 +42,7 @@ public class SysMenuController extends AbstractController {
     @GetMapping("/list")
     @RequiresPermissions("sys:menu:list")
     public List<SysMenuCo> list(){
-        List<SysMenu> menuList = sysMenuGateway.list();
+        List<SysMenu> menuList = sysMenuGateway.select();
         for(SysMenu sysMenuEntity : menuList){
             SysMenu parentMenuEntity = sysMenuGateway.getById(sysMenuEntity.getParentId());
             if(parentMenuEntity != null){
@@ -57,12 +53,13 @@ public class SysMenuController extends AbstractController {
         return sysMenuCos;
     }
 
+
     /**
      * 选择菜单(添加、修改菜单)
      */
     @GetMapping("/select")
     @RequiresPermissions("sys:menu:select")
-    public SingleResponse select(){
+    public R select(){
         //查询列表数据
         List<SysMenuCo> menuList = sysMenuGateway.queryNotButtonList();
 
@@ -73,21 +70,15 @@ public class SysMenuController extends AbstractController {
         root.setParentId(-1L);
         root.setOpen(true);
         menuList.add(root);
-        Map<String,Object> map = new HashMap<>();
-        map.put("menuList", menuList);
-        return SingleResponse.of(map);
-    }
+        menuList.add(root);
 
-    /**
-     * 菜单信息
-     */
+        return R.ok().put("menuList", menuList);
+    }
     @GetMapping("/info/{menuId}")
     @RequiresPermissions("sys:menu:info")
-    public SingleResponse info(@PathVariable("menuId") Long menuId){
+    public R info(@PathVariable("menuId") Long menuId){
         SysMenu menu = sysMenuGateway.getById(menuId);
-        Map<String,Object> map = new HashMap<>();
-        map.put("menu", menu);
-        return SingleResponse.of(map);
+        return R.ok().put("menu", menu);
     }
 
     /**
@@ -96,13 +87,13 @@ public class SysMenuController extends AbstractController {
     @SysLog("保存菜单")
     @PostMapping("/save")
     @RequiresPermissions("sys:menu:save")
-    public SingleResponse save(@RequestBody SysMenu menu){
+    public R save(@RequestBody SysMenu menu){
         //数据校验
         verifyForm(menu);
 
-        sysMenuGateway.save(menu);
+        sysMenuGateway.saves(menu);
 
-        return SingleResponse.buildSuccess();
+        return R.ok();
     }
 
     /**
@@ -111,13 +102,13 @@ public class SysMenuController extends AbstractController {
     @SysLog("修改菜单")
     @PostMapping("/update")
     @RequiresPermissions("sys:menu:update")
-    public SingleResponse update(@RequestBody SysMenu menu){
+    public R update(@RequestBody SysMenu menu){
         //数据校验
         verifyForm(menu);
 
-        sysMenuGateway.updateById(menu);
+        sysMenuGateway.updateByIds(menu);
 
-        return SingleResponse.buildSuccess();
+        return R.ok();
     }
 
     /**
@@ -126,20 +117,20 @@ public class SysMenuController extends AbstractController {
     @SysLog("删除菜单")
     @PostMapping("/delete/{menuId}")
     @RequiresPermissions("sys:menu:delete")
-    public SingleResponse delete(@PathVariable("menuId") long menuId){
+    public R delete(@PathVariable("menuId") long menuId){
         if(menuId <= 31){
-            return BaseHttpCodeResponse.error("系统菜单，不能删除");
+            return R.error("系统菜单，不能删除");
         }
 
         //判断是否有子菜单或按钮
         List<SysMenuCo> menuList = sysMenuGateway.queryListParentId(menuId);
         if(menuList.size() > 0){
-            return BaseHttpCodeResponse.error("请先删除子菜单或按钮");
+            return R.error("请先删除子菜单或按钮");
         }
 
         sysMenuGateway.delete(menuId);
 
-        return SingleResponse.buildSuccess();
+        return R.ok();
     }
 
     /**
@@ -185,7 +176,4 @@ public class SysMenuController extends AbstractController {
             return ;
         }
     }
-
-
-
 }
