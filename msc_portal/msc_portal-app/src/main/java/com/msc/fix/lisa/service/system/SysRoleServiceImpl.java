@@ -22,6 +22,7 @@ import com.msc.fix.lisa.domain.common.utils.Query;
 import com.msc.fix.lisa.domain.entity.system.SysRole;
 import com.msc.fix.lisa.domain.entity.system.SysRoleMenu;
 import com.msc.fix.lisa.domain.gateway.system.SysRoleMenuGateway;
+import com.msc.fix.lisa.dto.system.SysRoleQry;
 import com.msc.fix.lisa.dto.system.cto.SysRoleCo;
 import com.msc.fix.lisa.repository.db.mapper.SysRoleMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -65,7 +66,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveRole(SysRoleCo role) {
+    public void saveRole(SysRoleQry role) {
         role.setCreateTime(new Date());
 		SysRole sysRole = BeanUtils.convert(role, SysRole.class);
 		baseMapper.insert(sysRole);
@@ -79,7 +80,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(SysRoleCo role) {
+    public void update(SysRoleQry role) {
 		SysRole sysRole = BeanUtils.convert(role, SysRole.class);
 
 		baseMapper.updateById(sysRole);
@@ -110,10 +111,24 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 		return baseMapper.queryRoleIdList(createUserId);
 	}
 
+	@Override
+	public List<SysRoleCo> selectByMap(Map<String, Object> map) {
+		List<SysRole> sysRoles = baseMapper.selectByMap(map);
+		List<SysRoleCo> sysRoleCos = BeanUtils.convertList(sysRoles, SysRoleCo.class);
+		return sysRoleCos;
+	}
+
+	@Override
+	public SysRoleCo getByIds(Long roleId) {
+		SysRole sysRole = baseMapper.selectById(roleId);
+		SysRoleCo roleCo = BeanUtils.convert(sysRole, SysRoleCo.class);
+		return roleCo;
+	}
+
 	/**
 	 * 检查权限是否越权
 	 */
-	private void checkPrems(SysRoleCo role){
+	private void checkPrems(SysRoleQry role){
 		//如果不是超级管理员，则需要判断角色的权限是否超过自己的权限
 		if(role.getCreateUserId() == Constant.SUPER_ADMIN){
 			return ;

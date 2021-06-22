@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.toolkit.IOUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
-import sun.security.provider.certpath.OCSPResponse;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;

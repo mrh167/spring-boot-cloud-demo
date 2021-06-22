@@ -9,6 +9,7 @@
 package com.msc.fix.lisa.api.system;
 
 import com.msc.fix.lisa.common.utils.PageUtils;
+import com.msc.fix.lisa.dto.system.SysRoleQry;
 import com.msc.fix.lisa.dto.system.cto.SysRoleCo;
 
 import java.util.List;
@@ -24,9 +25,9 @@ public interface SysRoleService {
 
 	PageUtils queryPage(Map<String, Object> params);
 
-	void saveRole(SysRoleCo role);
+	void saveRole(SysRoleQry role);
 
-	void update(SysRoleCo role);
+	void update(SysRoleQry role);
 
 	void deleteBatch(Long[] roleIds);
 
@@ -35,4 +36,9 @@ public interface SysRoleService {
 	 * 查询用户创建的角色ID列表
 	 */
 	List<Long> queryRoleIdList(Long createUserId);
+
+
+	List<SysRoleCo> selectByMap(Map<String, Object> map);
+
+	SysRoleCo getByIds(Long roleId);
 }
