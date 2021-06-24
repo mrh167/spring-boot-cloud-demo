@@ -26,6 +26,9 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
     @Autowired
     private SysRoleMenuGateway sysRoleMenuGateway;
 
+    @Autowired
+    private SysMenuMapper sysMenuMapper;
+
     @Override
     public List<SysMenuCo> queryListParentId(Long parentId, List<Long> menuIdList) {
         List<SysMenuCo> menuList = queryListParentId(parentId);
@@ -44,12 +47,12 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
 
     @Override
     public List<SysMenuCo> queryListParentId(Long parentId) {
-        return baseMapper.queryListParentId(parentId);
+        return sysMenuMapper.queryListParentId(parentId);
     }
 
     @Override
     public List<SysMenuCo> queryNotButtonList() {
-        return baseMapper.queryNotButtonList();
+        return sysMenuMapper.queryNotButtonList();
     }
 
     @Override
@@ -95,14 +98,14 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
     @Override
     public void delete(Long menuId) {
 //删除菜单
-        this.removeById(menuId);
+        sysMenuMapper.deleteById(menuId);
         //删除菜单与角色关联
         sysRoleMenuGateway.removeByMap(new MapUtils().put("menu_id", menuId));
     }
 
     @Override
     public SysMenu getById(Long parentId) {
-        return baseMapper.selectById(parentId);
+        return sysMenuMapper.selectByIds(parentId);
     }
 
     @Override

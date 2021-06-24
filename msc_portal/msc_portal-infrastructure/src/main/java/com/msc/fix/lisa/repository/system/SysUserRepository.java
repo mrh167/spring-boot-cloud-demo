@@ -33,6 +33,6 @@ public class SysUserRepository extends ServiceImpl<SysUserMapper, SysUser> imple
 
     @Override
     public List<Long> queryAllMenuId(Long userId) {
-        return baseMapper.queryAllMenuId(userId);
+        return sysUserMapper.queryAllMenuId(userId);
     }
 }

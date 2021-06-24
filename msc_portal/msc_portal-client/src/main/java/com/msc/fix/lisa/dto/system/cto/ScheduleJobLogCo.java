@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -23,8 +22,7 @@ import java.util.Date;
  */
 @Data
 @TableName("schedule_job_log")
-public class ScheduleJobLogCo implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class ScheduleJobLogCo {
 	
 	/**
 	 * 日志id

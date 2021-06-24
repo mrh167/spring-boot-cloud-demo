@@ -11,4 +11,8 @@
 		select * from sys_menu where type != 2 order by order_num asc
 	</select>
 
+	<select id="selectByIds" resultType="com.msc.fix.lisa.domain.entity.system.SysMenu">
+		select * from sys_menu where parent_id = #{parentId} order by order_num asc
+	</select>
+
 </mapper>

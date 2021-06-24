@@ -8,19 +8,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="start" />
-        <module name="boot-jsondemo" />
-        <module name="msc_portal-controller" />
-        <module name="msc_portal-domain" />
-        <module name="boot-okhttp-demo" />
         <module name="dao-starter" />
-        <module name="msc_portal-app" />
-        <module name="msc_portal_domain_starter" />
-        <module name="easyexcel" />
-        <module name="msc_portal-client" />
-        <module name="boot-email-demo" />
+        <module name="start" />
         <module name="msc_portal_commons" />
+        <module name="msc_portal-domain" />
+        <module name="boot-jsondemo" />
+        <module name="msc_portal-app" />
+        <module name="boot-email-demo" />
+        <module name="msc_portal_domain_starter" />
         <module name="msc_portal-infrastructure" />
+        <module name="msc_portal-controller" />
+        <module name="easyexcel" />
+        <module name="boot-okhttp-demo" />
+        <module name="msc_portal-client" />
         <module name="boot-quartz-demo" />
       </profile>
     </annotationProcessing>
