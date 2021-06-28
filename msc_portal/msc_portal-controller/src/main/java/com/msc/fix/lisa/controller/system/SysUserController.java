@@ -1,7 +1,5 @@
 package com.msc.fix.lisa.controller.system;
 
-import com.msc.fix.lisa.api.system.SysUserRoleService;
-import com.msc.fix.lisa.api.system.SysUserService;
 import com.msc.fix.lisa.base.AbstractController;
 import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.utils.PageUtils;
@@ -11,7 +9,9 @@ import com.msc.fix.lisa.domain.common.validator.Assert;
 import com.msc.fix.lisa.domain.common.validator.ValidatorUtils;
 import com.msc.fix.lisa.domain.common.validator.group.AddGroup;
 import com.msc.fix.lisa.domain.common.validator.group.UpdateGroup;
-import com.msc.fix.lisa.dto.system.cto.SysUserCo;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
+import com.msc.fix.lisa.domain.gateway.system.SysUserGateway;
+import com.msc.fix.lisa.domain.gateway.system.SysUserRoleGateway;
 import com.msc.fix.lisa.executor.query.system.PasswordForm;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -27,9 +27,9 @@ import java.util.Map;
 public class SysUserController extends AbstractController {
 
     @Autowired
-    private SysUserService sysUserService;
+    private SysUserGateway sysUserGateway;
     @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private SysUserRoleGateway sysUserRoleGateway;
 
     /**
      * 所有用户列表
@@ -41,7 +41,7 @@ public class SysUserController extends AbstractController {
         if(getUserId() != Constant.SUPER_ADMIN){
             params.put("createUserId", getUserId());
         }
-        PageUtils page = sysUserService.queryPage(params);
+        PageUtils page = sysUserGateway.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -68,7 +68,7 @@ public class SysUserController extends AbstractController {
         String newPassword = new Sha256Hash(form.getNewPassword(), getUser().getSalt()).toHex();
 
         //更新密码
-        boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
+        boolean flag = sysUserGateway.updatePassword(getUserId(), password, newPassword);
         if(!flag){
             return R.error("原密码不正确");
         }
@@ -82,10 +82,10 @@ public class SysUserController extends AbstractController {
     @GetMapping("/info/{userId}")
     @RequiresPermissions("sys:user:info")
     public R info(@PathVariable("userId") Long userId){
-        SysUserCo user = sysUserService.getById(userId);
+        SysUser user = sysUserGateway.getById(userId);
 
         //获取用户所属的角色列表
-        List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+        List<Long> roleIdList = sysUserRoleGateway.queryRoleIdList(userId);
         user.setRoleIdList(roleIdList);
 
         return R.ok().put("user", user);
@@ -97,11 +97,11 @@ public class SysUserController extends AbstractController {
     @SysLog("保存用户")
     @PostMapping("/save")
     @RequiresPermissions("sys:user:save")
-    public R save(@RequestBody SysUserCo user){
+    public R save(@RequestBody SysUser user){
         ValidatorUtils.validateEntity(user, AddGroup.class);
 
         user.setCreateUserId(getUserId());
-        sysUserService.saveUser(user);
+        sysUserGateway.saveUser(user);
 
         return R.ok();
     }
@@ -112,11 +112,11 @@ public class SysUserController extends AbstractController {
     @SysLog("修改用户")
     @PostMapping("/update")
     @RequiresPermissions("sys:user:update")
-    public R update(@RequestBody SysUserCo user){
+    public R update(@RequestBody SysUser user){
         ValidatorUtils.validateEntity(user, UpdateGroup.class);
 
         user.setCreateUserId(getUserId());
-        sysUserService.update(user);
+        sysUserGateway.update(user);
 
         return R.ok();
     }
@@ -136,7 +136,7 @@ public class SysUserController extends AbstractController {
             return R.error("当前用户不能删除");
         }
 
-        sysUserService.deleteBatch(userIds);
+        sysUserGateway.deleteBatch(userIds);
 
         return R.ok();
     }

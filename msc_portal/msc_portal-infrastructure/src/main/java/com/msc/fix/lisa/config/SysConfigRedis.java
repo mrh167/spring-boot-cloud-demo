@@ -6,10 +6,10 @@
  * 版权所有，侵权必究！
  */
 
-package com.msc.fix.lisa.common.config;
+package com.msc.fix.lisa.config;
 
 
-import com.msc.fix.lisa.common.utils.RedisUtils;
+import com.msc.fix.lisa.domain.common.utils.RedisUtils;
 import com.msc.fix.lisa.domain.entity.system.SysConfig;
 import org.springframework.stereotype.Component;
 

@@ -4,12 +4,10 @@ import com.msc.fix.lisa.base.AbstractController;
 import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.RRException;
 import com.msc.fix.lisa.domain.common.annotation.SysLog;
-import com.msc.fix.lisa.domain.common.utils.BeanUtils;
 import com.msc.fix.lisa.domain.common.utils.Constant;
 import com.msc.fix.lisa.domain.entity.system.SysMenu;
 import com.msc.fix.lisa.domain.gateway.system.ShiroGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysMenuGateway;
-import com.msc.fix.lisa.dto.system.cto.SysMenuCo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +30,7 @@ public class SysMenuController extends AbstractController {
      */
     @GetMapping("/nav")
     public R nav(){
-        List<SysMenuCo> menuList = sysMenuGateway.getUserMenuList(getUserId());
+        List<SysMenu> menuList = sysMenuGateway.getUserMenuList(getUserId());
         Set<String> permissions = shiroGateway.getUserPermissions(getUserId());
         return R.ok().put("menuList", menuList).put("permissions", permissions);
     }
@@ -41,16 +39,16 @@ public class SysMenuController extends AbstractController {
      */
     @GetMapping("/list")
     @RequiresPermissions("sys:menu:list")
-    public List<SysMenuCo> list(){
-        List<SysMenu> menuList = sysMenuGateway.select();
+    public List<SysMenu> list(){
+        List<SysMenu> menuList = sysMenuGateway.list();
         for(SysMenu sysMenuEntity : menuList){
             SysMenu parentMenuEntity = sysMenuGateway.getById(sysMenuEntity.getParentId());
             if(parentMenuEntity != null){
                 sysMenuEntity.setParentName(parentMenuEntity.getName());
             }
         }
-        List<SysMenuCo> sysMenuCos = BeanUtils.convertList(menuList, SysMenuCo.class);
-        return sysMenuCos;
+
+        return menuList;
     }
 
 
@@ -61,10 +59,10 @@ public class SysMenuController extends AbstractController {
     @RequiresPermissions("sys:menu:select")
     public R select(){
         //查询列表数据
-        List<SysMenuCo> menuList = sysMenuGateway.queryNotButtonList();
+        List<SysMenu> menuList = sysMenuGateway.queryNotButtonList();
 
         //添加顶级菜单
-        SysMenuCo root = new SysMenuCo();
+        SysMenu root = new SysMenu();
         root.setMenuId(0L);
         root.setName("一级菜单");
         root.setParentId(-1L);
@@ -123,7 +121,7 @@ public class SysMenuController extends AbstractController {
         }
 
         //判断是否有子菜单或按钮
-        List<SysMenuCo> menuList = sysMenuGateway.queryListParentId(menuId);
+        List<SysMenu> menuList = sysMenuGateway.queryListParentId(menuId);
         if(menuList.size() > 0){
             return R.error("请先删除子菜单或按钮");
         }

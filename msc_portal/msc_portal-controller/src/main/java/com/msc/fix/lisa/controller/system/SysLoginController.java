@@ -1,15 +1,13 @@
 package com.msc.fix.lisa.controller.system;
 
-import com.alibaba.cola.dto.SingleResponse;
-import com.msc.fix.lisa.api.system.SysUserService;
 import com.msc.fix.lisa.base.AbstractController;
 import com.msc.fix.lisa.common.BusinessException;
 import com.msc.fix.lisa.common.R;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
 import com.msc.fix.lisa.domain.gateway.system.SysCaptchaGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysUserGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysUserTokenGateway;
 import com.msc.fix.lisa.dto.system.SysLoginForm;
-import com.msc.fix.lisa.dto.system.cto.SysUserCo;
 import io.swagger.annotations.Api;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -35,9 +33,6 @@ import java.util.Map;
 @RequestMapping("/api")
 public class SysLoginController extends AbstractController {
 
-
-    @Autowired
-    private SysUserService sysUserService;
     @Autowired
     private SysCaptchaGateway sysCaptchaGateway;
     @Autowired
@@ -74,7 +69,7 @@ public class SysLoginController extends AbstractController {
             throw new BusinessException("验证码无效");
         }
         //用户信息
-        SysUserCo user = sysUserGateway.queryByUserName(form.getUsername());
+        SysUser user = sysUserGateway.queryByUserName(form.getUsername());
 
         //账号不存在、密码错误
         if(user == null || !user.getPassword().equals(new Sha256Hash(form.getPassword(), user.getSalt()).toHex())) {
@@ -95,9 +90,9 @@ public class SysLoginController extends AbstractController {
      * 退出
      */
     @PostMapping("/sys/logout")
-    public SingleResponse logout() {
+    public R logout() {
         sysUserTokenGateway.logouts(getUserId());
-        return SingleResponse.buildSuccess();
+        return R.ok();
     }
 }
 

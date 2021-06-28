@@ -1,6 +1,6 @@
 package com.msc.fix.lisa.domain.gateway.system;
 
-import com.msc.fix.lisa.dto.system.cto.SysUserCo;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
 import com.msc.fix.lisa.dto.system.cto.SysUserTokenCo;
 
 import java.util.Set;
@@ -17,5 +17,5 @@ public interface ShiroGateway {
      * 根据用户ID，查询用户
      * @param userId
      */
-    SysUserCo queryUser(Long userId);
+    SysUser queryUser(Long userId);
 }

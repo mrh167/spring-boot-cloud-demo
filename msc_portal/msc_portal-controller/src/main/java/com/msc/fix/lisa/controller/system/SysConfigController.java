@@ -9,13 +9,13 @@
 package com.msc.fix.lisa.controller.system;
 
 
-import com.msc.fix.lisa.api.system.SysConfigService;
 import com.msc.fix.lisa.base.AbstractController;
 import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.utils.PageUtils;
 import com.msc.fix.lisa.domain.common.annotation.SysLog;
 import com.msc.fix.lisa.domain.common.validator.ValidatorUtils;
-import com.msc.fix.lisa.dto.system.cto.SysConfigCo;
+import com.msc.fix.lisa.domain.entity.system.SysConfig;
+import com.msc.fix.lisa.domain.gateway.system.SysConfigGateway;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ import java.util.Map;
 @RequestMapping("/api/sys/config")
 public class SysConfigController extends AbstractController {
 	@Autowired
-	private SysConfigService sysConfigService;
+	private SysConfigGateway sysConfigGateway;
 	
 	/**
 	 * 所有配置列表
@@ -39,7 +39,7 @@ public class SysConfigController extends AbstractController {
 	@GetMapping("/list")
 	@RequiresPermissions("sys:config:list")
 	public R list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysConfigService.queryPage(params);
+		PageUtils page = sysConfigGateway.queryPage(params);
 
 		return R.ok().put("page", page);
 	}
@@ -51,7 +51,7 @@ public class SysConfigController extends AbstractController {
 	@GetMapping("/info/{id}")
 	@RequiresPermissions("sys:config:info")
 	public R info(@PathVariable("id") Long id){
-		SysConfigCo config = sysConfigService.getByIds(id);
+		SysConfig config = sysConfigGateway.getByIds(id);
 		
 		return R.ok().put("config", config);
 	}
@@ -62,10 +62,10 @@ public class SysConfigController extends AbstractController {
 	@SysLog("保存配置")
 	@PostMapping("/save")
 	@RequiresPermissions("sys:config:save")
-	public R save(@RequestBody SysConfigCo config){
+	public R save(@RequestBody SysConfig config){
 		ValidatorUtils.validateEntity(config);
 
-		sysConfigService.saveConfig(config);
+		sysConfigGateway.saveConfig(config);
 		
 		return R.ok();
 	}
@@ -76,10 +76,10 @@ public class SysConfigController extends AbstractController {
 	@SysLog("修改配置")
 	@PostMapping("/update")
 	@RequiresPermissions("sys:config:update")
-	public R update(@RequestBody SysConfigCo config){
+	public R update(@RequestBody SysConfig config){
 		ValidatorUtils.validateEntity(config);
-		
-		sysConfigService.update(config);
+
+		sysConfigGateway.update(config);
 		
 		return R.ok();
 	}
@@ -91,7 +91,7 @@ public class SysConfigController extends AbstractController {
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:config:delete")
 	public R delete(@RequestBody Long[] ids){
-		sysConfigService.deleteBatch(ids);
+		sysConfigGateway.deleteBatch(ids);
 		
 		return R.ok();
 	}

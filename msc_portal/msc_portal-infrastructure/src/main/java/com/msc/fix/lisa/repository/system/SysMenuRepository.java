@@ -7,15 +7,14 @@ import com.msc.fix.lisa.domain.entity.system.SysMenu;
 import com.msc.fix.lisa.domain.gateway.system.SysMenuGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysRoleMenuGateway;
 import com.msc.fix.lisa.domain.gateway.system.SysUserGateway;
-import com.msc.fix.lisa.dto.system.cto.SysMenuCo;
 import com.msc.fix.lisa.repository.db.mapper.SysMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuGateway {
 
 
@@ -30,14 +29,14 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
     private SysMenuMapper sysMenuMapper;
 
     @Override
-    public List<SysMenuCo> queryListParentId(Long parentId, List<Long> menuIdList) {
-        List<SysMenuCo> menuList = queryListParentId(parentId);
+    public List<SysMenu> queryListParentId(Long parentId, List<Long> menuIdList) {
+        List<SysMenu> menuList = queryListParentId(parentId);
         if(menuIdList == null){
             return menuList;
         }
 
-        List<SysMenuCo> userMenuList = new ArrayList<>();
-        for(SysMenuCo menu : menuList){
+        List<SysMenu> userMenuList = new ArrayList<>();
+        for(SysMenu menu : menuList){
             if(menuIdList.contains(menu.getMenuId())){
                 userMenuList.add(menu);
             }
@@ -46,17 +45,17 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
     }
 
     @Override
-    public List<SysMenuCo> queryListParentId(Long parentId) {
+    public List<SysMenu> queryListParentId(Long parentId) {
         return sysMenuMapper.queryListParentId(parentId);
     }
 
     @Override
-    public List<SysMenuCo> queryNotButtonList() {
+    public List<SysMenu> queryNotButtonList() {
         return sysMenuMapper.queryNotButtonList();
     }
 
     @Override
-    public List<SysMenuCo> getUserMenuList(Long userId) {
+    public List<SysMenu> getUserMenuList(Long userId) {
         //系统管理员，拥有最高权限
         if(userId == Constant.SUPER_ADMIN){
             return getAllMenuList(null);
@@ -69,9 +68,9 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
     /**
      * 获取所有菜单列表
      */
-    private List<SysMenuCo> getAllMenuList(List<Long> menuIdList){
+    private List<SysMenu> getAllMenuList(List<Long> menuIdList){
         //查询根菜单列表
-        List<SysMenuCo> menuList = queryListParentId(0L, menuIdList);
+        List<SysMenu> menuList = queryListParentId(0L, menuIdList);
         //递归获取子菜单
         getMenuTreeList(menuList, menuIdList);
 
@@ -81,10 +80,10 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
     /**
      * 递归
      */
-    private List<SysMenuCo> getMenuTreeList(List<SysMenuCo> menuList, List<Long> menuIdList){
-        List<SysMenuCo> subMenuList = new ArrayList<SysMenuCo>();
+    private List<SysMenu> getMenuTreeList(List<SysMenu> menuList, List<Long> menuIdList){
+        List<SysMenu> subMenuList = new ArrayList<SysMenu>();
 
-        for(SysMenuCo entity : menuList){
+        for(SysMenu entity : menuList){
             //目录
             if(entity.getType() == Constant.MenuType.CATALOG.getValue()){
                 entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
@@ -97,16 +96,16 @@ public class SysMenuRepository extends ServiceImpl<SysMenuMapper, SysMenu> imple
 
     @Override
     public void delete(Long menuId) {
-//删除菜单
-        sysMenuMapper.deleteById(menuId);
+        //删除菜单
+        this.removeById(menuId);
         //删除菜单与角色关联
         sysRoleMenuGateway.removeByMap(new MapUtils().put("menu_id", menuId));
     }
 
-    @Override
-    public SysMenu getById(Long parentId) {
-        return sysMenuMapper.selectByIds(parentId);
-    }
+//    @Override
+//    public SysMenu getById(Long parentId) {
+//        return sysMenuMapper.selectByIds(parentId);
+//    }
 
     @Override
     public void updateByIds(SysMenu menu) {

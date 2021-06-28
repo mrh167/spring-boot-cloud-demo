@@ -8,9 +8,10 @@
 
 package com.msc.fix.lisa.domain.entity.system;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -21,12 +22,13 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 @Data
-public class SysUserEntity implements Serializable {
+public class SysUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * 用户ID
 	 */
+	@TableId
 	private Long userId;
 
 	/**
@@ -65,6 +67,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 角色ID列表
 	 */
+	@TableField(exist=false)
 	private List<Long> roleIdList;
 
 	/**

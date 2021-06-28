@@ -17,7 +17,7 @@
 		where ur.user_id = #{userId}
 	</select>
 
-	<select id="queryByUserName" resultType="com.msc.fix.lisa.dto.system.cto.SysUserCo">
+	<select id="queryByUserName" resultType="com.msc.fix.lisa.domain.entity.system.SysUser">
 		select * from sys_user where username = #{username}
 	</select>
 

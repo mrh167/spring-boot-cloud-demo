@@ -9,12 +9,9 @@
 package com.msc.fix.lisa.common;
 
 
-import com.msc.fix.lisa.domain.entity.system.SysUserEntity;
-import com.msc.fix.lisa.domain.entity.system.SysUserToken;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
 import com.msc.fix.lisa.domain.gateway.system.ShiroGateway;
-import com.msc.fix.lisa.dto.system.cto.SysUserCo;
 import com.msc.fix.lisa.dto.system.cto.SysUserTokenCo;
-import com.msc.fix.lisa.repository.db.SysUser;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -45,7 +42,7 @@ public class OAuth2Realm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        SysUserCo user = (SysUserCo) principals.getPrimaryPrincipal();
+        SysUser user = (SysUser) principals.getPrimaryPrincipal();
         Long userId = user.getUserId();
 
         //用户权限列表
@@ -71,13 +68,12 @@ public class OAuth2Realm extends AuthorizingRealm {
         }
 
         //查询用户信息
-        SysUserCo user = shiroGateway.queryUser(tokenEntity.getUserId());
+        SysUser user = shiroGateway.queryUser(tokenEntity.getUserId());
         //账号锁定
         if(user.getStatus() == 0){
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, accessToken, getName());
-        return info;
+        return new SimpleAuthenticationInfo(user, accessToken, getName());
     }
 }

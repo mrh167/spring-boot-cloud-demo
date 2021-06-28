@@ -1,17 +1,14 @@
 package com.msc.fix.lisa.repository.system;
 
-import com.alibaba.cola.dto.SingleResponse;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.TokenGenerator;
 import com.msc.fix.lisa.domain.entity.system.SysUserToken;
 import com.msc.fix.lisa.domain.gateway.system.SysUserTokenGateway;
 import com.msc.fix.lisa.repository.db.mapper.SysUserTokenMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +17,7 @@ import java.util.Map;
  * Time: 15:46
  * Description: No Description
  */
-@Component
+@Service
 public class SysUserTokenRepository extends ServiceImpl<SysUserTokenMapper, SysUserToken> implements SysUserTokenGateway {
 
 

@@ -1,5 +1,8 @@
 package com.msc.fix.lisa.domain.gateway.system;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.msc.fix.lisa.domain.entity.system.SysCaptcha;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -9,7 +12,7 @@ import java.awt.image.BufferedImage;
  * Time: 16:08
  * Description: No Description
  */
-public interface SysCaptchaGateway {
+public interface SysCaptchaGateway extends IService<SysCaptcha> {
     /**
      * 获取图片验证码
      */

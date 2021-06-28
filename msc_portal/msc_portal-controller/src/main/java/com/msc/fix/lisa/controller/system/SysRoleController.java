@@ -9,16 +9,16 @@
 package com.msc.fix.lisa.controller.system;
 
 
-import com.msc.fix.lisa.api.system.SysRoleMenuService;
-import com.msc.fix.lisa.api.system.SysRoleService;
 import com.msc.fix.lisa.base.AbstractController;
 import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.common.utils.PageUtils;
 import com.msc.fix.lisa.domain.common.annotation.SysLog;
 import com.msc.fix.lisa.domain.common.utils.Constant;
 import com.msc.fix.lisa.domain.common.validator.ValidatorUtils;
+import com.msc.fix.lisa.domain.entity.system.SysRole;
+import com.msc.fix.lisa.domain.gateway.system.SysRoleGateway;
+import com.msc.fix.lisa.domain.gateway.system.SysRoleMenuGateway;
 import com.msc.fix.lisa.dto.system.SysRoleQry;
-import com.msc.fix.lisa.dto.system.cto.SysRoleCo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +36,9 @@ import java.util.Map;
 @RequestMapping("/api/sys/role")
 public class SysRoleController extends AbstractController {
 	@Autowired
-	private SysRoleService sysRoleService;
+	private SysRoleGateway sysRoleGateway;
 	@Autowired
-	private SysRoleMenuService sysRoleMenuService;
+	private SysRoleMenuGateway sysRoleMenuService;
 
 	/**
 	 * 角色列表
@@ -51,7 +51,7 @@ public class SysRoleController extends AbstractController {
 			params.put("createUserId", getUserId());
 		}
 
-		PageUtils page = sysRoleService.queryPage(params);
+		PageUtils page = sysRoleGateway.queryPage(params);
 
 		return R.ok().put("page", page);
 	}
@@ -68,7 +68,7 @@ public class SysRoleController extends AbstractController {
 		if(getUserId() != Constant.SUPER_ADMIN){
 			map.put("create_user_id", getUserId());
 		}
-		List<SysRoleCo> list = sysRoleService.selectByMap(map);
+		List<SysRole> list = (List<SysRole>)sysRoleGateway.listByMap(map);
 		
 		return R.ok().put("list", list);
 	}
@@ -79,7 +79,7 @@ public class SysRoleController extends AbstractController {
 	@GetMapping("/info/{roleId}")
 	@RequiresPermissions("sys:role:info")
 	public R info(@PathVariable("roleId") Long roleId){
-		SysRoleCo role = sysRoleService.getByIds(roleId);
+		SysRole role = sysRoleGateway.getById(roleId);
 		
 		//查询角色对应的菜单
 		List<Long> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);
@@ -98,7 +98,7 @@ public class SysRoleController extends AbstractController {
 		ValidatorUtils.validateEntity(role);
 		
 		role.setCreateUserId(getUserId());
-		sysRoleService.saveRole(role);
+		sysRoleGateway.saveRole(role);
 		
 		return R.ok();
 	}
@@ -113,7 +113,7 @@ public class SysRoleController extends AbstractController {
 		ValidatorUtils.validateEntity(role);
 		
 		role.setCreateUserId(getUserId());
-		sysRoleService.update(role);
+		sysRoleGateway.update(role);
 		
 		return R.ok();
 	}
@@ -125,7 +125,7 @@ public class SysRoleController extends AbstractController {
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:role:delete")
 	public R delete(@RequestBody Long[] roleIds){
-		sysRoleService.deleteBatch(roleIds);
+		sysRoleGateway.deleteBatch(roleIds);
 		
 		return R.ok();
 	}

@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msc.fix.lisa.domain.entity.system.SysRoleMenu;
 import com.msc.fix.lisa.domain.gateway.system.SysRoleMenuGateway;
 import com.msc.fix.lisa.repository.db.mapper.SysRoleMenuMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Service
 public class SysRoleMenuRepository extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements SysRoleMenuGateway {
     @Override
     @Transactional(rollbackFor = Exception.class)

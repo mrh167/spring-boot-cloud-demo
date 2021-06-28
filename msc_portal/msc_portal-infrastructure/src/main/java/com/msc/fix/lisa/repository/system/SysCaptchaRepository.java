@@ -10,8 +10,7 @@ import com.msc.fix.lisa.domain.gateway.system.SysCaptchaGateway;
 import com.msc.fix.lisa.repository.db.mapper.SysCaptchaMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Date;
@@ -23,8 +22,7 @@ import java.util.Date;
  * Time: 16:14
  * Description: No Description
  */
-@Component
-@Repository
+@Service
 public class SysCaptchaRepository extends ServiceImpl<SysCaptchaMapper, SysCaptcha> implements SysCaptchaGateway {
     @Autowired
     private Producer producer;

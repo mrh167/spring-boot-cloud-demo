@@ -10,7 +10,7 @@ package com.msc.fix.lisa.domain.common.utils;
 
 
 import com.msc.fix.lisa.common.RRException;
-import com.msc.fix.lisa.domain.entity.system.SysUserEntity;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -30,8 +30,8 @@ public class ShiroUtils {
 		return SecurityUtils.getSubject();
 	}
 
-	public static SysUserEntity getUserEntity() {
-		return (SysUserEntity)SecurityUtils.getSubject().getPrincipal();
+	public static SysUser getUserEntity() {
+		return (SysUser)SecurityUtils.getSubject().getPrincipal();
 	}
 
 	public static Long getUserId() {

@@ -9,8 +9,7 @@
 package com.msc.fix.lisa.base;
 
 
-import com.msc.fix.lisa.domain.entity.system.SysUserEntity;
-import com.msc.fix.lisa.dto.system.cto.SysUserCo;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +22,8 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractController {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
-	protected SysUserCo getUser() {
-		return (SysUserCo) SecurityUtils.getSubject().getPrincipal();
+	protected SysUser getUser() {
+		return (SysUser) SecurityUtils.getSubject().getPrincipal();
 	}
 
 	protected Long getUserId() {

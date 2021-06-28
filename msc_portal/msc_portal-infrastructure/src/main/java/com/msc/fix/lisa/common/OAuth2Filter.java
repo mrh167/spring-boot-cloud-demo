@@ -10,14 +10,12 @@ package com.msc.fix.lisa.common;
 
 
 
-import com.alibaba.cola.dto.SingleResponse;
 import com.google.gson.Gson;
 import com.msc.fix.lisa.domain.common.utils.HttpContextUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
-
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -83,9 +81,9 @@ public class OAuth2Filter extends AuthenticatingFilter {
         try {
             //处理登录失败的异常
             Throwable throwable = e.getCause() == null ? e : e.getCause();
+            R r = R.error(HttpStatus.SC_UNAUTHORIZED, throwable.getMessage());
 
-            SingleResponse er = BaseHttpCodeResponse.error(HttpStatus.SC_UNAUTHORIZED, throwable.getMessage());
-            String json = new Gson().toJson(er);
+            String json = new Gson().toJson(r);
             httpResponse.getWriter().print(json);
         } catch (IOException e1) {
 

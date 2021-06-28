@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.msc.fix.lisa.common.utils;
+package com.msc.fix.lisa.domain.common.utils;
 
 import com.google.gson.Gson;
 import org.springframework.data.redis.core.*;

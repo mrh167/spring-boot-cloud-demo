@@ -1,8 +1,7 @@
 package com.msc.fix.lisa.repository.db.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.msc.fix.lisa.dto.system.cto.SysUserCo;
-import com.msc.fix.lisa.repository.db.SysUser;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    SysUserCo queryByUserName(@Param("username") String username);
+    SysUser queryByUserName(@Param("username") String username);
 
 
 
