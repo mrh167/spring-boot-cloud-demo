@@ -89,7 +89,7 @@ public class SysMenuController extends AbstractController {
         //数据校验
         verifyForm(menu);
 
-        sysMenuGateway.saves(menu);
+        sysMenuGateway.save(menu);
 
         return R.ok();
     }
