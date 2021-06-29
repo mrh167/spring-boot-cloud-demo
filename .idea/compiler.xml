@@ -11,6 +11,7 @@
         <module name="dao-starter" />
         <module name="start" />
         <module name="msc_portal_commons" />
+        <module name="mybatis-plus-generator-ui" />
         <module name="msc_portal-domain" />
         <module name="boot-jsondemo" />
         <module name="msc_portal-app" />
@@ -47,6 +48,7 @@
       <module name="msc_portal-infrastructure" target="1.8" />
       <module name="msc_portal_commons" target="8" />
       <module name="msc_portal_domain_starter" target="1.8" />
+      <module name="mybatis-plus-generator-ui" target="1.8" />
       <module name="start" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -56,6 +58,7 @@
       <module name="boot-jsondemo" options="-parameters" />
       <module name="boot-okhttp-demo" options="-parameters" />
       <module name="boot-quartz-demo" options="-parameters" />
+      <module name="mybatis-plus-generator-ui" options="" />
     </option>
   </component>
 </project>

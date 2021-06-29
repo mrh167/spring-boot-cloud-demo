@@ -17,6 +17,7 @@
         <option value="$PROJECT_DIR$/msc_portal/pom.xml" />
         <option value="$PROJECT_DIR$/msc_portal/msc_portal_domain_starter/pom.xml" />
         <option value="$PROJECT_DIR$/msc_portal/start/pom.xml" />
+        <option value="$PROJECT_DIR$/msc_portal/mybatis-plus-generator-ui/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

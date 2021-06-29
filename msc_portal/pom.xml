@@ -163,5 +163,6 @@
         <module>msc_portal_domain_starter</module>
         <module>dao-starter</module>
         <module>msc_portal_commons</module>
+        <module>mybatis-plus-generator-ui</module>
     </modules>
 </project>
