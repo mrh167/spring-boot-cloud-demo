@@ -61,8 +61,13 @@ public class ShiroConfig {
         filterMap.put("/api/swagger-resources/**", "anon");
         filterMap.put("/api/captcha.jpg", "anon");
         filterMap.put("/api/aaa.txt", "anon");
-//        filterMap.put("/api/**", "oauth2");
-        filterMap.put("/api/**", "anon");
+        filterMap.put("/api/ac/**", "anon");
+        filterMap.put("/api/db/**", "anon");
+        filterMap.put("/api/mbp-generator/**", "anon");
+        filterMap.put("/api/output-file-info/**", "anon");
+        filterMap.put("/api/sql/**", "anon");
+        filterMap.put("/api/template/**", "anon");
+        filterMap.put("/api/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;
