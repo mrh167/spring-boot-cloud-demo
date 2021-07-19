@@ -1,7 +1,6 @@
 package com.msc.fix.lisa.controller.system;
 
 import com.msc.fix.lisa.base.AbstractController;
-import com.msc.fix.lisa.common.BusinessException;
 import com.msc.fix.lisa.common.R;
 import com.msc.fix.lisa.domain.entity.system.SysUser;
 import com.msc.fix.lisa.domain.gateway.system.SysCaptchaGateway;
@@ -66,19 +65,19 @@ public class SysLoginController extends AbstractController {
         boolean captcha = sysCaptchaGateway.validate(form.getUuid(), form.getCaptcha());
 
         if(!captcha){
-            throw new BusinessException("验证码无效");
+            R.error("验证码无效");
         }
         //用户信息
         SysUser user = sysUserGateway.queryByUserName(form.getUsername());
 
         //账号不存在、密码错误
         if(user == null || !user.getPassword().equals(new Sha256Hash(form.getPassword(), user.getSalt()).toHex())) {
-            throw new BusinessException("账号或密码不正确");
+            R.error("账号或密码不正确");
         }
 
         //账号锁定
         if(user.getStatus() == 0){
-            throw new BusinessException("账号已被锁定,请联系管理员");
+            R.error("账号已被锁定,请联系管理员");
         }
 
         R r = sysUserTokenGateway.createToken(user.getUserId());

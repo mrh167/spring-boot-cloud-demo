@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msc.fix.lisa.repository.db.mapper.BaseNodeRegionMapper">
+
+
+   <!-- 可根据自己的需求，是否要使用 -->
+   <resultMap type="com.msc.fix.lisa.domain.entity.BaseNodeRegionEntity" id="BaseResultMap">
+                      <result property="id" column="id"/>
+                      <result property="sellerNo" column="seller_no"/>
+                      <result property="sellerName" column="seller_name"/>
+                      <result property="deptNo" column="dept_no"/>
+                      <result property="deptName" column="dept_name"/>
+                      <result property="nodeNo" column="node_no"/>
+                      <result property="nodeName" column="node_name"/>
+                      <result property="createUser" column="create_user"/>
+                      <result property="updateUser" column="update_user"/>
+                      <result property="createTime" column="create_time"/>
+                      <result property="updateTime" column="update_time"/>
+                      <result property="yn" column="yn"/>
+                      <result property="region" column="region"/>
+          </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+                   id,
+                   seller_no,
+                   seller_name,
+                   dept_no,
+                   dept_name,
+                   node_no,
+                   node_name,
+                   create_user,
+                   update_user,
+                   create_time,
+                   update_time,
+                   yn,
+                   region
+            </sql>
+
+   <select id="listPage" resultMap="BaseResultMap">
+       select
+       <include refid="Base_Column_List"/>
+       from portal_base_node_region
+       where yn =1
+   </select>
+</mapper>

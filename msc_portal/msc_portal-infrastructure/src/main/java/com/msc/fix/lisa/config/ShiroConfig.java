@@ -67,7 +67,7 @@ public class ShiroConfig {
         filterMap.put("/api/output-file-info/**", "anon");
         filterMap.put("/api/sql/**", "anon");
         filterMap.put("/api/template/**", "anon");
-        filterMap.put("/api/**", "oauth2");
+        filterMap.put("/api/sys/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;

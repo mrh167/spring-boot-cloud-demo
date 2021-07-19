@@ -38,7 +38,7 @@ public class SwaggerConfig {
                 .title("导出案例文档")
                 .contact(new Contact("maRuiHua","null","maRuiHua@qq.com"))
                 .version("0.1")
-                .termsOfServiceUrl("http://localhost:8003/doc.html")
+                .termsOfServiceUrl("http://localhost:8068/doc.html")
                 .description("msc_portal desc")
                 .build();
     }

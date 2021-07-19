@@ -20,7 +20,7 @@ public class GeneratorConfigruation {
     @Bean
     public static GeneratorConfig generatorConfig(){
         GeneratorConfig config = GeneratorConfig.builder()
-                .jdbcUrl("jdbc:mysql://localhost:3306/vsc_portal?characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai")
+                .jdbcUrl("jdbc:mysql://localhost:3306/msc_blog?characterEncoding=utf-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai")
                 .userName("root")
                 .password("root")
                 .driverClassName("com.mysql.cj.jdbc.Driver")

@@ -1,6 +1,7 @@
 com\msc\fix\lisa\controller\CustomerController.class
 com\msc\fix\lisa\controller\system\SysLoginController.class
 com\msc\fix\lisa\controller\system\SysRoleController.class
+com\msc\fix\lisa\controller\TestController.class
 com\msc\fix\lisa\controller\system\SysLogController.class
 com\msc\fix\lisa\controller\quratz\ScheduleJobController.class
 com\msc\fix\lisa\controller\system\SysConfigController.class
