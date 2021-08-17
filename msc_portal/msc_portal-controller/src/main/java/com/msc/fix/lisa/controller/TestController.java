@@ -1,12 +1,17 @@
 package com.msc.fix.lisa.controller;
 
+import com.alibaba.cola.dto.SingleResponse;
 import com.msc.fix.lisa.api.BaseNodeRegionService;
 import com.msc.fix.lisa.base.PageResponse;
 import com.msc.fix.lisa.dto.BaseNodeRegionPageQry;
+import com.msc.fix.lisa.dto.ImageUploadCmd;
 import com.msc.fix.lisa.dto.system.cto.BaseNodeRegionCo;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import sun.dc.pr.PRException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,4 +37,21 @@ public class TestController {
 
         return baseNodeRegionService.queryPage(baseNodeRegionPageQry);
     }
+
+    @ApiOperation("图片上传")
+    @PostMapping("/upload")
+    public SingleResponse upload(
+            @ApiParam(value = "文件", required = true)
+            @RequestParam("file") MultipartFile file) throws PRException {
+
+        if (file.getSize()<1) {
+            throw new PRException("上传文件不能为空");
+        }
+        ImageUploadCmd uploadCmd = new ImageUploadCmd();
+        uploadCmd.setFile(file);
+        return baseNodeRegionService.upload(uploadCmd);
+    }
+
+
+
 }

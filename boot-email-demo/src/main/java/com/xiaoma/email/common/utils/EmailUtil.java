@@ -1,6 +1,6 @@
 package com.xiaoma.email.common.utils;
 
-import com.xiaoma.email.service.EmailService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -16,7 +16,7 @@ public class EmailUtil{
 //    private EasyExcelUtil excelFactory;
  
     @Autowired
-    private EmailService emailService = new EmailService();
+//    private EmailService emailService = new EmailService();
  
     @Resource
     private ThreadPoolTaskExecutor threadPool;

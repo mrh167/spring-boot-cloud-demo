@@ -15,14 +15,15 @@
         <module name="msc_portal-domain" />
         <module name="boot-jsondemo" />
         <module name="msc_portal-app" />
-        <module name="boot-email-demo" />
         <module name="msc_portal_domain_starter" />
         <module name="msc_portal-infrastructure" />
         <module name="msc_portal-controller" />
+        <module name="boot-email-demo" />
         <module name="easyexcel" />
         <module name="boot-okhttp-demo" />
         <module name="msc_portal-client" />
         <module name="boot-quartz-demo" />
+        <module name="springboot-oss" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -49,6 +50,7 @@
       <module name="msc_portal_commons" target="8" />
       <module name="msc_portal_domain_starter" target="1.8" />
       <module name="mybatis-plus-generator-ui" target="1.8" />
+      <module name="springboot-oss" target="8" />
       <module name="start" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -59,6 +61,7 @@
       <module name="boot-okhttp-demo" options="-parameters" />
       <module name="boot-quartz-demo" options="-parameters" />
       <module name="mybatis-plus-generator-ui" options="" />
+      <module name="springboot-oss" options="-parameters" />
     </option>
   </component>
 </project>

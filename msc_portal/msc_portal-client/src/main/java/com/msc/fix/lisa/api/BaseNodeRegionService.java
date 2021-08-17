@@ -1,7 +1,9 @@
 package com.msc.fix.lisa.api;
 
+import com.alibaba.cola.dto.SingleResponse;
 import com.msc.fix.lisa.base.PageResponse;
 import com.msc.fix.lisa.dto.BaseNodeRegionPageQry;
+import com.msc.fix.lisa.dto.ImageUploadCmd;
 import com.msc.fix.lisa.dto.system.cto.BaseNodeRegionCo;
 
 /**
@@ -14,4 +16,6 @@ import com.msc.fix.lisa.dto.system.cto.BaseNodeRegionCo;
 public interface BaseNodeRegionService {
 
     PageResponse<BaseNodeRegionCo> queryPage(BaseNodeRegionPageQry baseNodeRegionPageQry);
+
+    SingleResponse upload(ImageUploadCmd file);
 }

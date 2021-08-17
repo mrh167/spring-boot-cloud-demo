@@ -1,0 +1,18 @@
+# OSS相关配置信息
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com # oss对外服务的访问域名
+    accessKeyId: LTAI5tEjHngZHnN3Hkc3kmag # 访问身份验证中用到用户标识
+    accessKeySecret: smYM4bDRvpkrHLCeV9Zqt4F5azLinK # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: upload-oss3 # oss的存储空间
+    policy:
+      expire: 300 # 签名有效期(S)
+    maxSize: 10 # 上传文件大小(M)
+    callback: https://oss.console.aliyun.com/bucket/oss-cn-beijing/upload-oss3/object # 文件上传成功后的回调地址
+    dir:
+      prefix: oss://upload-oss3/ # 上传文件夹路径前缀
+
+
+#      用户登录名称 upload_mrh@1420906889057668.onaliyun.com
+#      AccessKey ID LTAI5tEjHngZHnN3Hkc3kmag
+#      AccessKey Secret smYM4bDRvpkrHLCeV9Zqt4F5azLinK

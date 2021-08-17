@@ -31,7 +31,7 @@ public class SysUserToken implements Serializable {
 	//token
 	private String token;
 	//过期时间
-	private Date expireTime;
+	private Long expireTime;
 	//更新时间
 	private Date updateTime;
 
