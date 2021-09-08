@@ -1,35 +1,17 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
-
 package com.msc.fix.lisa.repository.db.mapper;
+
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msc.fix.lisa.domain.entity.system.SysUserRole;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 /**
- * 用户与角色对应关系
+ * <p>
+ * 用户与角色对应关系 Mapper 接口
+ * </p>
  *
- * @author Mark sunlightcs@gmail.com
+ * @author 马瑞华
+ * @since 2021-08-31
  */
-@Mapper
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
-	/**
-	 * 根据用户ID，获取角色ID列表
-	 */
-	List<Long> queryRoleIdList(Long userId);
-
-
-	/**
-	 * 根据角色ID数组，批量删除
-	 */
-	int deleteBatch(Long[] roleIds);
 }

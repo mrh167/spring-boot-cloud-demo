@@ -3,12 +3,16 @@ package com.msc.fix.lisa.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,12 +25,45 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket petApi() {
+    public Docket createRestApi(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.msc.fix.lisa.controller")) //指定提供接口所在的基包
+                .apis(RequestHandlerSelectors.basePackage("com.msc.fix.lisa.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .securityContexts(securityContexts())
+                .securitySchemes(securitySchemes());
+    }
+
+    private List<SecurityContext> securityContexts() {
+        List<SecurityContext> res = new ArrayList<>();
+        // 设置需要登录认证的路径
+        res.add(getContextByPath("/hello/*"));
+        return res;
+    }
+
+    private SecurityContext getContextByPath(String pathRegex) {
+        return SecurityContext.builder().securityReferences(defaultAuthPath())
+                .forPaths(PathSelectors.regex(pathRegex))
                 .build();
+    }
+
+    private List<SecurityReference> defaultAuthPath() {
+        List<SecurityReference> res = new ArrayList<>();
+        AuthorizationScope scope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] scopes = new AuthorizationScope[1];
+        scopes[0] = scope;
+        res.add(new SecurityReference("Authorization",scopes));
+        return res;
+    }
+
+    private List<ApiKey> securitySchemes() {
+        List<ApiKey> res = new ArrayList<>();
+        // 设置请求头信息
+        ApiKey apiKey = new ApiKey("Auth", "Authorization", "Header");
+        res.add(apiKey);
+        return res;
     }
 
     /**

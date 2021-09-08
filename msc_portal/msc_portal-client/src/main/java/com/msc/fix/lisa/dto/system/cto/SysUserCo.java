@@ -1,28 +1,33 @@
 package com.msc.fix.lisa.dto.system.cto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
  * User: ext.maruihua1
- * Date: 2021/6/15
- * Time: 18:26
+ * Date: 2021/8/27
+ * Time: 15:44
  * Description: No Description
  */
 @Data
-public class SysUserCo implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class SysUserCo {
+    Map<String, String> tokenMap = new HashMap<>(16);
+
     /**
-     * 用户ID
+     * 自增主键
      */
-    @ApiModelProperty(value = "主键")
-    private Long userId;
+    @ApiModelProperty(value = "自增主键")
+    private Long id;
+
+    /**
+     * 账号
+     */
+    @ApiModelProperty(value = "账号")
+    private String account;
 
     /**
      * 用户名
@@ -31,16 +36,10 @@ public class SysUserCo implements Serializable {
     private String username;
 
     /**
-     * 密码
+     * 昵称
      */
-    @ApiModelProperty(value = "密码")
-    private String password;
-
-    /**
-     * 盐
-     */
-    @ApiModelProperty(value = "盐值")
-    private String salt;
+    @ApiModelProperty(value = "昵称")
+    private String nickName;
 
     /**
      * 邮箱
@@ -49,34 +48,14 @@ public class SysUserCo implements Serializable {
     private String email;
 
     /**
-     * 手机号
+     * 手机
      */
-    @ApiModelProperty(value = "手机号")
-    private String mobile;
+    @ApiModelProperty(value = "手机")
+    private String phone;
 
     /**
-     * 状态  0：禁用   1：正常
+     * 状态
      */
-    @ApiModelProperty(value = "状态")
+    @ApiModelProperty(value = "状态: 0禁用, 1启用")
     private Integer status;
-
-
-    /**
-     * 创建者ID
-     */
-    @ApiModelProperty(value = "创建者ID")
-    private Long createUserId;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-    /**
-     * 角色ID列表
-     */
-    @ApiModelProperty(hidden = true)
-    @TableField(exist=false)
-    private List<Long> roleIdList;
 }

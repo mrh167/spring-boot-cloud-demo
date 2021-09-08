@@ -1,57 +1,56 @@
 package com.msc.fix.lisa.controller;
 
 import com.alibaba.cola.dto.SingleResponse;
-import com.msc.fix.lisa.api.BaseNodeRegionService;
-import com.msc.fix.lisa.base.PageResponse;
-import com.msc.fix.lisa.dto.BaseNodeRegionPageQry;
-import com.msc.fix.lisa.dto.ImageUploadCmd;
-import com.msc.fix.lisa.dto.system.cto.BaseNodeRegionCo;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import com.msc.fix.lisa.domain.entity.system.SysUser;
+import com.msc.fix.lisa.dto.system.SysUserCoooo;
+import com.msc.fix.lisa.dto.system.cto.SysUserCo;
+import com.msc.fix.lisa.repository.db.mapper.SysUserMapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import sun.dc.pr.PRException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
  * User: ext.maruihua1
- * Date: 2021/7/19
- * Time: 15:32
+ * Date: 2021/8/31
+ * Time: 18:44
  * Description: No Description
  */
+@Api(tags = "测试注册")
 @RestController
-@RequestMapping("/api/test")
 public class TestController {
 
     @Autowired
-    private BaseNodeRegionService baseNodeRegionService;
+    private SysUserMapper sysUserMapper;
 
-    /**
-     * 列表
-     */
-    @ApiOperation("测试案例")
-    @PostMapping("/testPost")
-    public PageResponse<BaseNodeRegionCo> list(@RequestBody BaseNodeRegionPageQry baseNodeRegionPageQry){
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
-        return baseNodeRegionService.queryPage(baseNodeRegionPageQry);
+    @PostMapping(value = "/register")
+    public SingleResponse<SysUserCo> register(@RequestBody SysUserCoooo sysUser){
+        SysUser user = new SysUser();
+        user.setUsername(sysUser.getUsername());
+        String pwd = passwordEncoder.encode(sysUser.getPassword());
+        user.setPassword(pwd);
+        user.setAccount(sysUser.getAccount());
+        user.setEmail(sysUser.getEmail());
+        user.setEnabled(sysUser.getEnabled() ? 0 : 1);
+        user.setPhone(sysUser.getPhone());
+        user.setCreateUser("JD_SCM");
+        user.setCreateTime(new Date());
+        user.setUpdateUser("JD_SCM");
+        user.setUpdateTime(new Date());
+        user.setYn(1);
+//        user.initCreate(sysUser.getAccount());
+//        SysUserDo userDo = BeanUtils.convert(user, SysUserDo.class);
+//        CommonUtil.fillByCreate(new Date(),sysUser.getAccount(),userDo);
+        sysUserMapper.insert(user);
+       return SingleResponse.buildSuccess();
     }
-
-    @ApiOperation("图片上传")
-    @PostMapping("/upload")
-    public SingleResponse upload(
-            @ApiParam(value = "文件", required = true)
-            @RequestParam("file") MultipartFile file) throws PRException {
-
-        if (file.getSize()<1) {
-            throw new PRException("上传文件不能为空");
-        }
-        ImageUploadCmd uploadCmd = new ImageUploadCmd();
-        uploadCmd.setFile(file);
-        return baseNodeRegionService.upload(uploadCmd);
-    }
-
-
-
 }

@@ -11,6 +11,7 @@ public class CustomerRepository implements CustomerGateway {
     @Autowired
     private CustomerMapper customerMapper;
 
+    @Override
     public Customer getByById(String customerId){
       CustomerDO customerDO = customerMapper.getById(customerId);
       //Convert to Customer

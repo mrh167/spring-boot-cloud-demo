@@ -1,99 +1,45 @@
 package com.msc.fix.lisa.controller.system;
 
-import com.msc.fix.lisa.base.AbstractController;
-import com.msc.fix.lisa.common.R;
-import com.msc.fix.lisa.domain.entity.system.SysUser;
-import com.msc.fix.lisa.domain.gateway.system.SysCaptchaGateway;
-import com.msc.fix.lisa.domain.gateway.system.SysUserGateway;
-import com.msc.fix.lisa.domain.gateway.system.SysUserTokenGateway;
-import com.msc.fix.lisa.dto.system.SysLoginForm;
+import com.alibaba.cola.dto.SingleResponse;
+import com.msc.fix.lisa.api.system.SysLoginService;
+import com.msc.fix.lisa.dto.system.SysUserCmd;
+import com.msc.fix.lisa.dto.system.cto.SysUserCo;
 import io.swagger.annotations.Api;
-import org.apache.commons.io.IOUtils;
-import org.apache.shiro.crypto.hash.Sha256Hash;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * Created with IntelliJ IDEA.
  * User: ext.maruihua1
- * Date: 2021/6/15
- * Time: 18:10
+ * Date: 2021/8/27
+ * Time: 14:23
  * Description: No Description
  */
-@RestController
-@Api(tags = "导入模板", produces = "application/json")
+@Api(tags = "登录",produces = "用户登录页面")
 @RequestMapping("/api")
-public class SysLoginController extends AbstractController {
+@RestController
+public class SysLoginController {
 
     @Autowired
-    private SysCaptchaGateway sysCaptchaGateway;
-    @Autowired
-    private SysUserGateway sysUserGateway;
-
-    @Autowired
-    private SysUserTokenGateway sysUserTokenGateway;
+    private SysLoginService sysLoginService;
 
 
-    @GetMapping("/captcha.jpg")
-    public void captcha(HttpServletResponse response,String uuid){
-        response.setHeader("Cache-Control", "no-store, no-cache");
-        response.setContentType("image/jpeg");
-        //获取图片验证码
-        BufferedImage image = sysCaptchaGateway.getCaptcha(uuid);
-
-        ServletOutputStream out = null;
-        try {
-            out = response.getOutputStream();
-            ImageIO.write(image, "jpg", out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        IOUtils.closeQuietly(out);
-    }
-    /**
-     * 登录
-     */
-    @PostMapping("/sys/login")
-    public Map<String, Object> login(@RequestBody SysLoginForm form)throws IOException {
-        boolean captcha = sysCaptchaGateway.validate(form.getUuid(), form.getCaptcha());
-
-        if(!captcha){
-            R.error("验证码无效");
-        }
-        //用户信息
-        SysUser user = sysUserGateway.queryByUserName(form.getUsername());
-
-        //账号不存在、密码错误
-        if(user == null || !user.getPassword().equals(new Sha256Hash(form.getPassword(), user.getSalt()).toHex())) {
-            R.error("账号或密码不正确");
-        }
-
-        //账号锁定
-        if(user.getStatus() == 0){
-            R.error("账号已被锁定,请联系管理员");
-        }
-
-        R r = sysUserTokenGateway.createToken(user.getUserId());
-        //生成token，并保存到数据库
-        return r;
+    @ApiModelProperty(value = "登录接口")
+    @PostMapping(value = "/login")
+    public SingleResponse<SysUserCo> login(@RequestBody @Valid SysUserCmd sysUserCmd, HttpServletRequest request){
+//        String captcha =(String) request.getSession().getAttribute("captcha");
+//        sysUserCmd.setCaptcha(captcha);
+        return sysLoginService.login(sysUserCmd);
     }
 
-    /**
-     * 退出
-     */
-    @PostMapping("/sys/logout")
-    public R logout() {
-        sysUserTokenGateway.logouts(getUserId());
-        return R.ok();
-    }
+
+
+
 }
-
-
-
