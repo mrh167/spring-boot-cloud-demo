@@ -1,9 +1,11 @@
 package com.msc.fix.lisa.service.system;
 
 import com.alibaba.cola.command.CommandBusI;
+import com.alibaba.cola.dto.SingleResponse;
 import com.msc.fix.lisa.api.system.SysUserService;
 import com.msc.fix.lisa.base.PageResponse;
 import com.msc.fix.lisa.dto.system.SysUserQry;
+import com.msc.fix.lisa.dto.system.UpdateStatusCmd;
 import com.msc.fix.lisa.dto.system.cto.SysUserCo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +27,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public PageResponse<SysUserCo> pageList(SysUserQry sysUserQry) {
         return (PageResponse<SysUserCo>) commandBusI.send(sysUserQry);
+    }
+
+    @Override
+    public SingleResponse updateStatus(UpdateStatusCmd updateStatusCmd) {
+        return (SingleResponse) commandBusI.send(updateStatusCmd);
     }
 }

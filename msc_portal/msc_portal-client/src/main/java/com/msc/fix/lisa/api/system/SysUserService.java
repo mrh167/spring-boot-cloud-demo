@@ -1,7 +1,9 @@
 package com.msc.fix.lisa.api.system;
 
+import com.alibaba.cola.dto.SingleResponse;
 import com.msc.fix.lisa.base.PageResponse;
 import com.msc.fix.lisa.dto.system.SysUserQry;
+import com.msc.fix.lisa.dto.system.UpdateStatusCmd;
 import com.msc.fix.lisa.dto.system.cto.SysUserCo;
 
 /**
@@ -13,4 +15,6 @@ import com.msc.fix.lisa.dto.system.cto.SysUserCo;
  */
 public interface SysUserService {
     PageResponse<SysUserCo> pageList(SysUserQry sysUserQry);
+
+    SingleResponse updateStatus(UpdateStatusCmd updateStatusCmd);
 }

@@ -18,5 +18,5 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     SysUser selectUser(String username);
 
-    List<SysUserQry> listPage(SysUserQry pageQry);
+    List<SysUser> listPage(SysUserQry pageQry);
 }
