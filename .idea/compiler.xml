@@ -19,6 +19,7 @@
         <module name="msc_portal-infrastructure" />
         <module name="msc_portal-controller" />
         <module name="boot-email-demo" />
+        <module name="boot-elasticsearch" />
         <module name="easyexcel" />
         <module name="boot-okhttp-demo" />
         <module name="msc_portal-client" />
@@ -27,6 +28,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="boot-elasticsearch" target="8" />
       <module name="boot-email-demo" target="1.8" />
       <module name="boot-jsondemo" target="8" />
       <module name="boot-okhttp-demo" target="8" />
@@ -56,6 +58,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="boot-elasticsearch" options="-parameters" />
       <module name="boot-email-demo" options="-parameters" />
       <module name="boot-jsondemo" options="-parameters" />
       <module name="boot-okhttp-demo" options="-parameters" />
