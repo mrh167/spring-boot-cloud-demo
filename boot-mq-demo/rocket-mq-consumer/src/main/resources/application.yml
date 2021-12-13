@@ -1,0 +1,22 @@
+server:
+  port: 8083
+rocketmq:
+  # ����������
+  consumer:
+    isOnOff: on
+    # �ٷ����飺ȷ��ͬһ���е�ÿ�������߶�����ͬ�����⡣
+    groupName: CicadaGroup
+    # �����ַ
+    namesrvAddr: 127.0.0.1:9876
+    # ���ո� Topic ������ Tag
+    topics: CicadaTopic~*;
+    consumeThreadMin: 20
+    consumeThreadMax: 64
+    # ����һ��������Ϣ��������Ĭ��Ϊ1��
+    consumeMessageBatchMaxSize: 1
+
+# ���� Group  Topic  Tag
+rocket:
+  group: rocketGroup
+  topic: rocketTopic
+  tag: rocketTag

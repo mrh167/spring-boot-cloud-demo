@@ -1,0 +1,36 @@
+server:
+  port: 8082
+
+rocketmq:
+  # ����������
+  producer:
+    isOnOff: on
+    # ����ͬһ����Ϣ������Ϊͬһ��group����֤Ψһ
+    groupName: CicadaGroup
+    # �����ַ
+    namesrvAddr: 127.0.0.1:9876
+    # ��Ϣ��󳤶� Ĭ��1024*4(4M)
+    maxMessageSize: 4096
+    # ������Ϣ��ʱʱ��,Ĭ��3000
+    sendMsgTimeout: 3000
+    # ������Ϣʧ�����Դ�����Ĭ��2
+    retryTimesWhenSendFailed: 10
+  # ����������
+#  consumer:
+#    isOnOff: on
+#    # �ٷ����飺ȷ��ͬһ���е�ÿ�������߶�����ͬ�����⡣
+#    groupName: CicadaGroup
+#    # �����ַ
+#    namesrvAddr: 127.0.0.1:9876
+#    # ���ո� Topic ������ Tag
+#    topics: CicadaTopic~*;
+#    consumeThreadMin: 20
+#    consumeThreadMax: 64
+#    # ����һ��������Ϣ��������Ĭ��Ϊ1��
+#    consumeMessageBatchMaxSize: 10
+
+# ���� Group  Topic  Tag
+rocket:
+  group: rocketGroup
+  topic: rocketTopic
+  tag: rocketTag

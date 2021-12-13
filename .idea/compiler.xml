@@ -9,6 +9,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dao-starter" />
+        <module name="rocketmq-spring-boot-starter" />
         <module name="start" />
         <module name="msc_portal_commons" />
         <module name="mybatis-plus-generator-ui" />
@@ -21,9 +22,12 @@
         <module name="boot-email-demo" />
         <module name="boot-elasticsearch" />
         <module name="easyexcel" />
+        <module name="rocket-mq-consumer" />
         <module name="boot-okhttp-demo" />
         <module name="msc_portal-client" />
+        <module name="boot-study-source" />
         <module name="boot-quartz-demo" />
+        <module name="rocket-mq" />
         <module name="springboot-oss" />
       </profile>
     </annotationProcessing>
@@ -33,6 +37,7 @@
       <module name="boot-jsondemo" target="8" />
       <module name="boot-okhttp-demo" target="8" />
       <module name="boot-quartz-demo" target="8" />
+      <module name="boot-study-source" target="8" />
       <module name="dao-starter" target="1.8" />
       <module name="easyexcel" target="1.6" />
       <module name="msc_mall" target="1.8" />
@@ -52,6 +57,10 @@
       <module name="msc_portal_commons" target="8" />
       <module name="msc_portal_domain_starter" target="1.8" />
       <module name="mybatis-plus-generator-ui" target="1.8" />
+      <module name="rocket-mq" target="8" />
+      <module name="rocket-mq-consumer" target="8" />
+      <module name="rocketmq-demo" target="1.7" />
+      <module name="rocketmq-spring-boot-starter" target="1.8" />
       <module name="springboot-oss" target="8" />
       <module name="start" target="1.8" />
     </bytecodeTargetLevel>
@@ -64,6 +73,8 @@
       <module name="boot-okhttp-demo" options="-parameters" />
       <module name="boot-quartz-demo" options="-parameters" />
       <module name="mybatis-plus-generator-ui" options="" />
+      <module name="rocket-mq" options="-parameters" />
+      <module name="rocket-mq-consumer" options="-parameters" />
       <module name="springboot-oss" options="-parameters" />
     </option>
   </component>

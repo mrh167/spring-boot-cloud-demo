@@ -20,6 +20,10 @@
         <option value="$PROJECT_DIR$/msc_portal/mybatis-plus-generator-ui/pom.xml" />
         <option value="$PROJECT_DIR$/springboot-oss/pom.xml" />
         <option value="$PROJECT_DIR$/boot-elasticsearch/pom.xml" />
+        <option value="$PROJECT_DIR$/boot-mq-demo/rocket-mq/pom.xml" />
+        <option value="$PROJECT_DIR$/boot-study-source/pom.xml" />
+        <option value="$PROJECT_DIR$/boot-mq-demo/rocketmq-spring-boot-starter/pom.xml" />
+        <option value="$PROJECT_DIR$/boot-mq-demo/rocket-mq-consumer/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
